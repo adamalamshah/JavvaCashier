@@ -11,17 +11,10 @@ import java.util.*;
  * @author Galih
  */
 public class CashierSystem {
-    private static List<User> users;
-    private static List<Produk> produkList;
+    private static List<User> users = new ArrayList<>();
+    private static List<Produk> produkList = new ArrayList<>();
 
-    public CashierSystem() {
-        users = new ArrayList<>();
-        produkList = new ArrayList<>();
-        users.add(new Admin("admin", "1234"));
-        users.add(new Kasir("kasir", "1234"));
-    }
-
-    public void addUser(User user) {
+    public static void addUser(User user) {
         users.add(user);
     }
 
@@ -38,10 +31,10 @@ public class CashierSystem {
         return users;
     }
 
-    public void addProduk(Produk produk) {
+    public static void addProduk(Produk produk) {
         produkList.add(produk);
     }
-    public List<Produk> getProdukList() {
+    public static List<Produk> getProdukList() {
         return produkList;
     }
     public static Produk getProdukByName(String nama) {
@@ -96,20 +89,20 @@ class Kasir extends User {
 }
 
 class Produk {
-    private int id;
+    private String id;
     private String nama;
     private double harga;
 
-    public Produk(int id, String nama, double harga) {
+    public Produk(String id, String nama, double harga) {
         this.id = id;
         this.nama = nama;
         this.harga = harga;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getNama() {
