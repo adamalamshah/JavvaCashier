@@ -1,4 +1,5 @@
-
+import java.io.*;
+import java.util.*;
 import javax.swing.JOptionPane;
 
 /*
@@ -10,6 +11,59 @@ import javax.swing.JOptionPane;
  *
  * @author Galih, Adam, Hafizh
  */
+
+class User {
+    private String username;
+    private String pass;
+    private String job;
+    
+    public User(String username, String pass, String job){
+        this.username = username;
+        this.pass = pass;
+        this.job = job;
+    }
+    
+    public String getUsername() { 
+        return username; 
+    }
+    public String getPass() { 
+        return pass; 
+    }
+    public String getJob() { 
+        return job; 
+    }
+}
+
+class Sistem {
+    private static HashMap<String, User> user = new HashMap<>();
+    
+    static {
+        loadUsersFromFile();
+    }
+
+    private static void loadUsersFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("DataAccount.txt"))){
+            String baris;
+            while((baris = reader.readLine()) != null){
+                String[] bagian = baris.split(",");
+                if (bagian.length == 3){
+                    String username = bagian[0].trim();
+                    String pass = bagian[1].trim();
+                    String job = bagian[2].trim();
+                    user.put(username, new User(username, pass, job));
+                }
+            }
+        }
+        catch (IOException e){
+            System.out.println("Ada kesalahan saat mencoba login: " + e.getMessage());
+        }
+    }
+    
+    public static User getUser(String username){
+        return user.get(username);
+    }
+}
+
 public class LoginPage extends javax.swing.JFrame {
 
     /**
@@ -149,30 +203,14 @@ public class LoginPage extends javax.swing.JFrame {
         else if(tfPassword.getText().isEmpty()) 
             JOptionPane.showMessageDialog(this, "Password tidak boleh kosong", "Message", JOptionPane.INFORMATION_MESSAGE);
 
-        //login sementara
-        else if(tfUsername.getText().equals("admin") && tfPassword.getText().equals("1234")){
-            AdminPage adminPage = new AdminPage();
-            adminPage.setVisible(true);
-            this.dispose();
-        }
-        else if(tfUsername.getText().equals("kasir") && tfPassword.getText().equals("1234")){
-            CashierPage kasirPage = new CashierPage();
-            kasirPage.setVisible(true);
-            this.dispose();
-        }
-
-        //bagian ini masih error karena belum ada data user yang disimpan
-        else if(CashierSystem.getUser(tfUsername.getText()) != null && CashierSystem.getUser(tfUsername.getText()).getPassword().equals(tfPassword.getText())){
-            if(CashierSystem.getUser(tfUsername.getText()).getRole().equals("admin")){
-                AdminPage adminPage = new AdminPage();
-                adminPage.setVisible(true);
-                this.dispose();
+        else if(Sistem.getUser(tfUsername.getText()) != null && Sistem.getUser(tfUsername.getText()).getPass().equals(tfPassword.getText())){
+            User user = Sistem.getUser(tfUsername.getText());
+            if(user.getJob().equals("admin")){
+                new AdminPage().setVisible(true);
+            }else if(user.getJob().equals("kasir")){
+                new CashierPage().setVisible(true);
             }
-            else if(CashierSystem.getUser(tfUsername.getText()).getRole().equals("kasir")){
-                CashierPage kasirPage = new CashierPage();
-                kasirPage.setVisible(true);
-                this.dispose();
-            }
+            this.dispose();
         }
         else{
             JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
