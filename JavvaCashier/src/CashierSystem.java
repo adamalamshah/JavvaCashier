@@ -18,16 +18,15 @@ public class CashierSystem {
         users.add(user);
     }
 
-    public static User getUser(String username) {
+    public static User getUser(String id) {
         for (User user : users) {
-            if (user.getUsername().equals(username)) {
+            if (user.getUsername().equals(id)) {
                 return user;
             }
         }
         return null;
     }
-
-    public List<User> getUsers() {
+    public static List<User> getUsers() {
         return users;
     }
 
@@ -37,9 +36,9 @@ public class CashierSystem {
     public static List<Produk> getProdukList() {
         return produkList;
     }
-    public static Produk getProdukByName(String nama) {
+    public static Produk getProdukByID(String id) {
         for (Produk produk : produkList) {
-            if (produk.getNama().equals(nama)) {
+            if (produk.getId().equals(id)) {
                 return produk;
             }
         }
@@ -48,16 +47,26 @@ public class CashierSystem {
 }
 
 class User {
+    private String id;
+    private String nama;
     private String username;
     private String password;
     private String role;
 
-    public User(String username, String password, String role) {
+    public User(String id, String nama, String username, String password, String role) {
+        this.id = id;
+        this.nama = nama;
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
+    public String getId() {
+        return id;
+    }
+    public String getNama() {
+        return nama;
+    }
     public String getUsername() {
         return username;
     }
@@ -78,13 +87,13 @@ class User {
     }
 }
 class Admin extends User {
-    public Admin(String username, String password) {
-        super(username, password, "admin");
+    public Admin(String id, String nama, String username, String password) {
+        super(id, nama, username, password, "admin");
     }
 }
 class Kasir extends User {
-    public Kasir(String username, String password) {
-        super(username, password, "kasir");
+    public Kasir(String id, String nama, String username, String password) {
+        super(id, nama, username, password, "kasir");
     }
 }
 
