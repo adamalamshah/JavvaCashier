@@ -200,11 +200,9 @@ public class LoginPage extends javax.swing.JFrame {
     }//GEN-LAST:event_tfUsernameActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        if(tfUsername.getText().isEmpty()) 
+        if(tfUsername.getText().isEmpty()||tfPassword.getText().isEmpty()) 
             JOptionPane.showMessageDialog(this, "Username tidak boleh kosong", "Message", JOptionPane.INFORMATION_MESSAGE);
-        else if(tfPassword.getText().isEmpty()) 
-            JOptionPane.showMessageDialog(this, "Password tidak boleh kosong", "Message", JOptionPane.INFORMATION_MESSAGE);
-
+        
         else if(Sistem.getUser(tfUsername.getText()) != null && Sistem.getUser(tfUsername.getText()).getPass().equals(tfPassword.getText())){
             User user = Sistem.getUser(tfUsername.getText());
             if(user.getJob().equals("admin")){
