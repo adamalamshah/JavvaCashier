@@ -234,8 +234,12 @@ public class LoginPage extends javax.swing.JFrame {
             User user = Sistem.getUser(tfUsername.getText());
             if(user.getJob().equals("admin")){
                 new AdminPage().setVisible(true);
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
+                tfUsername.setText("");
+                tfPassword.setText("");
             }
-            this.dispose();
         }
         else{
             JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
@@ -257,8 +261,12 @@ public class LoginPage extends javax.swing.JFrame {
             User user = Sistem.getUser(tfUsername.getText());
             if(user.getJob().equals("kasir")){
                 new CashierPage().setVisible(true);
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
+                tfUsername.setText("");
+                tfPassword.setText("");
             }
-            this.dispose();
         }else{
             JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
             tfUsername.setText("");
