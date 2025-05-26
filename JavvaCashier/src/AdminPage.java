@@ -76,10 +76,10 @@ public class AdminPage extends javax.swing.JFrame {
         jPanel11 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         lblTotalKasir = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tableKasirHome = new javax.swing.JTable();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tableProdukHome = new javax.swing.JTable();
         pnlAturProduk = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -260,7 +260,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTotalProduk)
                     .addComponent(jLabel17))
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -294,7 +294,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTotalKasir)
                     .addComponent(jLabel21))
-                .addContainerGap(212, Short.MAX_VALUE))
+                .addContainerGap(196, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,38 +306,67 @@ public class AdminPage extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jList1.setBackground(new java.awt.Color(255, 255, 255));
-        jList1.setForeground(new java.awt.Color(0, 0, 0));
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        tableKasirHome.setBackground(new java.awt.Color(255, 255, 255));
+        tableKasirHome.setForeground(new java.awt.Color(0, 0, 0));
+        tableKasirHome.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jList2.setBackground(new java.awt.Color(255, 255, 255));
-        jList2.setForeground(new java.awt.Color(0, 0, 0));
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            },
+            new String [] {
+                "ID", "Nama", "Username"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
         });
-        jScrollPane2.setViewportView(jList2);
+        jScrollPane4.setViewportView(tableKasirHome);
+
+        tableProdukHome.setBackground(new java.awt.Color(255, 255, 255));
+        tableProdukHome.setForeground(new java.awt.Color(0, 0, 0));
+        tableProdukHome.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nama", "Harga"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane6.setViewportView(tableProdukHome);
 
         javax.swing.GroupLayout pnlHomeLayout = new javax.swing.GroupLayout(pnlHome);
         pnlHome.setLayout(pnlHomeLayout);
         pnlHomeLayout.setHorizontalGroup(
             pnlHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlHomeLayout.createSequentialGroup()
+            .addGroup(pnlHomeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addGap(18, 18, 18)
                 .addGroup(pnlHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlHomeLayout.setVerticalGroup(
@@ -350,9 +379,9 @@ public class AdminPage extends javax.swing.JFrame {
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addGap(18, 18, 18))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pnlCards.add(pnlHome, "card3");
@@ -831,7 +860,7 @@ public class AdminPage extends javax.swing.JFrame {
 
         lblTotalKasir.setText(String.valueOf(model.getRowCount()));
         tfHapusKasir.setText("");
-        // saveKasirToFile();
+//         saveKasirToFile();
     }//GEN-LAST:event_btnHapusKasirActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -859,7 +888,7 @@ public class AdminPage extends javax.swing.JFrame {
                 model.addRow(new Object[]{id, nama, harga});
                 JOptionPane.showMessageDialog(this, "Produk berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
 
-                lblTotalProduk.setText(String.valueOf(CashierSystem.getProdukList().size()));
+                lblTotalProduk.setText(String.valueOf(model.getRowCount()));
 
                 tfNamaProduk.setText("");
                 tfIDProduk.setText("");
@@ -962,10 +991,11 @@ public class AdminPage extends javax.swing.JFrame {
             }
             
             BufferedReader br = new BufferedReader(new FileReader(file));
-            String line = br.readLine(); // Skip header
+            String line = br.readLine();
             
             DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
-            model.setRowCount(0); // Clear existing data
+            DefaultTableModel modelHome = (DefaultTableModel) tableProdukHome.getModel();
+            model.setRowCount(0);
             
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
@@ -974,10 +1004,9 @@ public class AdminPage extends javax.swing.JFrame {
                     String nama = data[1];
                     double harga = Double.parseDouble(data[2]);
                     
-                    // Add to table
                     model.addRow(new Object[]{id, nama, harga});
+                    modelHome.addRow(new Object[]{id, nama, harga});
                     
-                    // Add to CashierSystem
                     Produk produk = new Produk(id, nama, harga);
                     CashierSystem.addProduk(produk);
                 }
@@ -1092,8 +1121,6 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
@@ -1104,10 +1131,10 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel lblTotalKasir;
     private javax.swing.JLabel lblTotalProduk;
@@ -1116,7 +1143,9 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JPanel pnlCards;
     private javax.swing.JPanel pnlHome;
     private javax.swing.JTable tableKasir;
+    private javax.swing.JTable tableKasirHome;
     private javax.swing.JTable tableProduk;
+    private javax.swing.JTable tableProdukHome;
     private javax.swing.JTextField tfHapusKasir;
     private javax.swing.JTextField tfHapusProduk;
     private javax.swing.JTextField tfHarga;

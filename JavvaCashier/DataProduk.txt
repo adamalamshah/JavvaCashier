@@ -1,0 +1,31 @@
+ID,Nama,Harga
+001, Indomie Goreng,3500.0
+002, Sabun Lifebuoy 75g, 4000.0
+003, Kopi Kapal Api 65g,2500.0
+004, Teh Celup Sariwangi 25s,6500.0
+005, Gula Pasir 1kg,14000.0
+006, Minyak Goreng 1L,17000.0
+007, Telur Ayam (1 butir),2200.0
+008, Sarden ABC 155g,8500.0
+009, Beras Ramos 5kg,65000.0
+010, Rokok Djarum Super,25000.0
+011, Mie Sedap Kari Ayam,3500.0
+012, Air Mineral Aqua 600ml,3500.0
+013, Rinso Deterjen 800g,12000.0
+014, Pepsodent Pasta Gigi 75g,6000.0
+015, Sabun Mandi Lux 75g,3500.0
+016, Kecap Manis ABC 135ml,7000.0
+017, Saus Sambal Indofood 135ml,6500.0
+018, Baterai ABC AA (2 pcs),9000.0
+019, Tisu Paseo 250 sheet,12000.0
+020, Permen Kopiko (1 bungkus),2000.0
+021, Energen Cokelat Sachet, 3000  
+022, SilverQueen Cokelat Kecil, 12500  
+023, Susu Kental Manis Indomilk 370g, 10500  
+024, Minyak Telon My Baby 60ml, 14000  
+025, Masker Medis 3 Lapis (Isi 5), 5000  
+026, Obat Nyamuk Bakar HIT (isi 10), 4000  
+027, Top Coffee Sachet, 2000  
+028, Minuman Teh Botol Sosro 450ml, 4000  
+029, Krupuk Udang Finna 200g, 11000  
+030, Sampo Lifebuoy 170ml, 16000  
