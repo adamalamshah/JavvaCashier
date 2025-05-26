@@ -214,6 +214,8 @@ public class LoginPage extends javax.swing.JFrame {
         }
         else{
             JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
+            tfUsername.setText("");
+            tfPassword.setText("");
         }
     }
 
