@@ -1,2 +1,2 @@
 admin,1234,admin
-adam,12,kasir
+adam,1234,kasir
