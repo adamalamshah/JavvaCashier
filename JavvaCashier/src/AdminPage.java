@@ -1,7 +1,20 @@
 
 import java.awt.CardLayout;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -30,6 +43,9 @@ public class AdminPage extends javax.swing.JFrame {
         btnAturKasir.setFocusPainted(false);
         btnLogout.setUI(new BasicButtonUI());
         btnLogout.setFocusPainted(false);
+
+        loadProdukFromFile();
+        // loadKasirFromFile();
 
         cardLayout = (CardLayout)(pnlCards.getLayout());
     }
@@ -82,7 +98,7 @@ public class AdminPage extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableProduk = new javax.swing.JTable();
         pnlAturKasir = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -103,7 +119,7 @@ public class AdminPage extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tableKasir = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -392,7 +408,7 @@ public class AdminPage extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addComponent(btnTambahProduk)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -429,7 +445,7 @@ public class AdminPage extends javax.swing.JFrame {
         });
 
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Nama Produk");
+        jLabel9.setText("ID Produk");
 
         btnHapusProduk.setText("Hapus");
         btnHapusProduk.addActionListener(new java.awt.event.ActionListener() {
@@ -455,7 +471,7 @@ public class AdminPage extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addComponent(btnHapusProduk)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -494,12 +510,11 @@ public class AdminPage extends javax.swing.JFrame {
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setForeground(new java.awt.Color(0, 0, 0));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableProduk.setBackground(new java.awt.Color(255, 255, 255));
+        tableProduk.setForeground(new java.awt.Color(0, 0, 0));
+        tableProduk.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"0001", "Indomie",  new Double(3500.0)},
-                {"0002", "Beras 10 kg",  new Double(75000.0)}
+
             },
             new String [] {
                 "ID", "Nama", "Harga"
@@ -520,7 +535,7 @@ public class AdminPage extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane5.setViewportView(jTable1);
+        jScrollPane5.setViewportView(tableProduk);
 
         javax.swing.GroupLayout pnlAturProdukLayout = new javax.swing.GroupLayout(pnlAturProduk);
         pnlAturProduk.setLayout(pnlAturProdukLayout);
@@ -528,10 +543,10 @@ public class AdminPage extends javax.swing.JFrame {
             pnlAturProdukLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlAturProdukLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap()
                 .addGroup(pnlAturProdukLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(9, Short.MAX_VALUE))
@@ -702,13 +717,11 @@ public class AdminPage extends javax.swing.JFrame {
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
-        jTable2.setBackground(new java.awt.Color(255, 255, 255));
-        jTable2.setForeground(new java.awt.Color(0, 0, 0));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tableKasir.setBackground(new java.awt.Color(255, 255, 255));
+        tableKasir.setForeground(new java.awt.Color(0, 0, 0));
+        tableKasir.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"0001", "Mulyono", "mulmulyosololo"},
-                {"0002", "Subiantono", "prabowonosubiantono"},
-                {null, null, null}
+
             },
             new String [] {
                 "ID", "Nama", "Username"
@@ -722,7 +735,7 @@ public class AdminPage extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable2);
+        jScrollPane3.setViewportView(tableKasir);
 
         javax.swing.GroupLayout pnlAturKasirLayout = new javax.swing.GroupLayout(pnlAturKasir);
         pnlAturKasir.setLayout(pnlAturKasirLayout);
@@ -784,29 +797,41 @@ public class AdminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAturKasirActionPerformed
 
     private void btnHapusProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusProdukActionPerformed
-        Produk produk = CashierSystem.getProdukByID(tfHapusProduk.getText());
-        if (produk != null) {
-            CashierSystem.getProdukList().remove(produk);
-            JOptionPane.showMessageDialog(this, "Produk berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
-            lblTotalProduk.setText(String.valueOf(CashierSystem.getProdukList().size()));
-            tfHapusProduk.setText("");
-        } 
-        else {
-            JOptionPane.showMessageDialog(this, "Produk tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
+        DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
+        
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getValueAt(i, 0).equals(tfHapusProduk.getText())) {
+                model.removeRow(i);
+                JOptionPane.showMessageDialog(this, "Produk berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
+                break;
+            }
+            else if (i == model.getRowCount() - 1) {
+                JOptionPane.showMessageDialog(this, "Produk tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
+            }
         }
+
+        lblTotalProduk.setText(String.valueOf(model.getRowCount()));
+        tfHapusProduk.setText("");
+        saveProdukToFile();
     }//GEN-LAST:event_btnHapusProdukActionPerformed
 
     private void btnHapusKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusKasirActionPerformed
-        User kasir = CashierSystem.getUser(tfHapusKasir.getText());
-        if (kasir != null) {
-            CashierSystem.getUsers().remove(kasir);
-            JOptionPane.showMessageDialog(this, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
-            lblTotalKasir.setText(String.valueOf(CashierSystem.getUsers().size()));
-            tfHapusKasir.setText("");
-        } 
-        else {
-            JOptionPane.showMessageDialog(this, "Kasir tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
+        DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getValueAt(i, 0).equals(tfHapusKasir.getText())) {
+                model.removeRow(i);
+                JOptionPane.showMessageDialog(this, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
+                break;
+            }
+            else if (i == model.getRowCount() - 1) {
+                JOptionPane.showMessageDialog(this, "Kasir tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
+            }
         }
+
+        lblTotalKasir.setText(String.valueOf(model.getRowCount()));
+        tfHapusKasir.setText("");
+        // saveKasirToFile();
     }//GEN-LAST:event_btnHapusKasirActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -829,13 +854,18 @@ public class AdminPage extends javax.swing.JFrame {
             }
             else{
                 double harga = Double.parseDouble(tfHarga.getText());
-                Produk produk = new Produk(id, nama, harga);
-                CashierSystem.addProduk(produk);
+
+                DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
+                model.addRow(new Object[]{id, nama, harga});
                 JOptionPane.showMessageDialog(this, "Produk berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
+
                 lblTotalProduk.setText(String.valueOf(CashierSystem.getProdukList().size()));
+
                 tfNamaProduk.setText("");
                 tfIDProduk.setText("");
                 tfHarga.setText("");
+
+                saveProdukToFile();
             }
         }
         catch(NumberFormatException e){
@@ -844,7 +874,7 @@ public class AdminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTambahProdukActionPerformed
 
     private void tfHapusProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfHapusProdukActionPerformed
-        
+
     }//GEN-LAST:event_tfHapusProdukActionPerformed
 
     private void btnTambahKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahKasirActionPerformed
@@ -859,15 +889,146 @@ public class AdminPage extends javax.swing.JFrame {
             Kasir kasir = new Kasir(id, nama, username, password);
             CashierSystem.addUser(kasir);
             JOptionPane.showMessageDialog(this, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
+            
+            DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
+            model.addRow(new Object[]{id, nama, username});
+            
             lblTotalKasir.setText(String.valueOf(CashierSystem.getUsers().size()));
+            
             tfIDKasir.setText("");
             tfNamaKasir.setText("");
             tfUsername.setText("");
             tfPassword.setText("");
         }
-
     }//GEN-LAST:event_btnTambahKasirActionPerformed
 
+    private void saveProdukToFile() {
+        try {
+            FileWriter fw = new FileWriter("DataProduk.txt");
+            PrintWriter pw = new PrintWriter(fw);
+            
+            DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
+            int rowCount = model.getRowCount();
+            
+            pw.println("ID,Nama,Harga");
+            
+            for(int i = 0; i < rowCount; i++) {
+                String id = model.getValueAt(i, 0).toString();
+                String nama = model.getValueAt(i, 1).toString();
+                String harga = model.getValueAt(i, 2).toString();
+                
+                pw.println(id + "," + nama + "," + harga);
+            }
+            
+            pw.close();
+        } catch(IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // private void saveKasirToFile() {
+    //     try {
+    //         FileWriter fw = new FileWriter("DataKasir.txt");
+    //         PrintWriter pw = new PrintWriter(fw);
+            
+    //         DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
+    //         int rowCount = model.getRowCount();
+            
+    //         // Write header
+    //         pw.println("ID,Nama,Username");
+            
+    //         // Write data
+    //         for(int i = 0; i < rowCount; i++) {
+    //             String id = model.getValueAt(i, 0).toString();
+    //             String nama = model.getValueAt(i, 1).toString();
+    //             String username = model.getValueAt(i, 2).toString();
+                
+    //             pw.println(id + "," + nama + "," + username);
+    //         }
+            
+    //         pw.close();
+    //         JOptionPane.showMessageDialog(this, "Data kasir berhasil disimpan ke file", "Success", JOptionPane.INFORMATION_MESSAGE);
+            
+    //     } catch(IOException ex) {
+    //         JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    //     }
+    // }
+
+    private void loadProdukFromFile() {
+        try {
+            File file = new File("DataProduk.txt");
+            if (!file.exists()) {
+                return;
+            }
+            
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line = br.readLine(); // Skip header
+            
+            DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
+            model.setRowCount(0); // Clear existing data
+            
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length == 3) {
+                    String id = data[0];
+                    String nama = data[1];
+                    double harga = Double.parseDouble(data[2]);
+                    
+                    // Add to table
+                    model.addRow(new Object[]{id, nama, harga});
+                    
+                    // Add to CashierSystem
+                    Produk produk = new Produk(id, nama, harga);
+                    CashierSystem.addProduk(produk);
+                }
+            }
+            
+            br.close();
+            lblTotalProduk.setText(String.valueOf(CashierSystem.getProdukList().size()));
+            
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error loading produk data: " + ex.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // private void loadKasirFromFile() {
+    //     try {
+    //         File file = new File("DataKasir.txt");
+    //         if (!file.exists()) {
+    //             return;
+    //         }
+            
+    //         BufferedReader br = new BufferedReader(new FileReader(file));
+    //         String line = br.readLine();
+            
+    //         DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
+    //         model.setRowCount(0);
+            
+    //         while ((line = br.readLine()) != null) {
+    //             String[] data = line.split(",");
+    //             if (data.length == 3) {
+    //                 String id = data[0];
+    //                 String nama = data[1];
+    //                 String username = data[2];
+                    
+    //                 model.addRow(new Object[]{id, nama, username});
+                    
+
+    //                 Kasir kasir = new Kasir(id, nama, username, "password");
+    //                 CashierSystem.addUser(kasir);
+    //             }
+    //         }
+            
+    //         br.close();
+    //         lblTotalKasir.setText(String.valueOf(CashierSystem.getUsers().size()));
+            
+    //     } catch (IOException ex) {
+    //         JOptionPane.showMessageDialog(this, "Error loading kasir data: " + ex.getMessage(), 
+    //             "Error", JOptionPane.ERROR_MESSAGE);
+    //     }
+    // }
+                         
     /**
      * @param args the command line arguments
      */
@@ -948,14 +1109,14 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblTotalKasir;
     private javax.swing.JLabel lblTotalProduk;
     private javax.swing.JPanel pnlAturKasir;
     private javax.swing.JPanel pnlAturProduk;
     private javax.swing.JPanel pnlCards;
     private javax.swing.JPanel pnlHome;
+    private javax.swing.JTable tableKasir;
+    private javax.swing.JTable tableProduk;
     private javax.swing.JTextField tfHapusKasir;
     private javax.swing.JTextField tfHapusProduk;
     private javax.swing.JTextField tfHarga;

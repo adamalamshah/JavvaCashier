@@ -1,0 +1,3 @@
+ID,Nama,Harga
+001,Indomie,3500.0
+002,Beras 5 kg,75000.0
