@@ -84,6 +84,11 @@ public class CashierPage extends javax.swing.JFrame {
         tfInputProduk.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         tfInputProduk.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
         tfInputProduk.setPreferredSize(new java.awt.Dimension(64, 24));
+        tfInputProduk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfInputProdukActionPerformed(evt);
+            }
+        });
 
         lblInputQty.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
         lblInputQty.setForeground(new java.awt.Color(255, 255, 255));
@@ -98,6 +103,11 @@ public class CashierPage extends javax.swing.JFrame {
         btnTambah.setFont(new java.awt.Font("Poppins", 1, 12)); // NOI18N
         btnTambah.setForeground(new java.awt.Color(0, 0, 0));
         btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
 
         btnLogout.setBackground(new java.awt.Color(56, 76, 120));
         btnLogout.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
@@ -190,9 +200,9 @@ public class CashierPage extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTotalLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49))
+                .addGap(24, 24, 24)
+                .addComponent(tfTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52))
         );
         panelTotalLayout.setVerticalGroup(
             panelTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -377,8 +387,17 @@ public class CashierPage extends javax.swing.JFrame {
     }//GEN-LAST:event_cbInputMetodeActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        // TODO add your handling code here:
+        new LoginPage().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void tfInputProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfInputProdukActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfInputProdukActionPerformed
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTambahActionPerformed
 
     /**
      * @param args the command line arguments
