@@ -945,8 +945,6 @@ public class AdminPage extends javax.swing.JFrame {
         try (FileWriter fw = new FileWriter("DataAccount.txt");
              PrintWriter pw = new PrintWriter(fw)) {
             
-            pw.println("Username,Password");
-            
             for(User user : CashierSystem.getUsers()) {
                 String username = user.getUsername();
                 String password = user.getPassword();
