@@ -12,60 +12,19 @@ import javax.swing.JOptionPane;
  * @author Galih, Adam, Hafizh
  */
 
-class User {
-    private String username;
-    private String pass;
-    private String job;
+public class LoginPage extends javax.swing.JFrame {
     
-    public User(String username, String pass, String job){
-        this.username = username;
-        this.pass = pass;
-        this.job = job;
-    }
-    
-    public String getUsername() { 
-        return username; 
-    }
-    public String getPass() { 
-        return pass; 
-    }
-    public String getJob() { 
-        return job; 
-    }
-}
+    static Admin admin = new Admin();
 
-class Sistem {
-    private static HashMap<String, User> user = new HashMap<>();
-    
-    static {
-        loadUsersFromFile();
-    }
-
-    private static void loadUsersFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("DataAccount.txt"))){
-            String baris;
-            while((baris = reader.readLine()) != null){
-                String[] bagian = baris.split(",");
-                if (bagian.length == 3){
-                    String username = bagian[0].trim();
-                    String pass = bagian[1].trim();
-                    String job = bagian[2].trim();
-                    user.put(username, new User(username, pass, job));
-                }
+    static boolean cekAkunKasir(List<User> users, String username, String password){
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return true;
             }
         }
-        catch (IOException e){
-            System.out.println("Ada kesalahan saat mencoba login: " + e.getMessage());
-        }
+        return false;
     }
     
-    public static User getUser(String username){
-        return user.get(username);
-    }
-}
-
-public class LoginPage extends javax.swing.JFrame {
-
     /**
      * Creates new form NewJFrame
      */
@@ -108,7 +67,7 @@ public class LoginPage extends javax.swing.JFrame {
             .addGap(0, 408, Short.MAX_VALUE)
         );
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 32)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -225,18 +184,10 @@ public class LoginPage extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Username atau password tidak boleh kosong", "Message", JOptionPane.INFORMATION_MESSAGE);
             tfUsername.setText("");
             pfPassword.setText("");
-        } else if(Sistem.getUser(tfUsername.getText()) != null && Sistem.getUser(tfUsername.getText()).getPass().equals(pfPassword.getText())){
-            User user = Sistem.getUser(tfUsername.getText());
-            if(user.getJob().equals("admin")){
-                new AdminPage().setVisible(true);
-                this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
-                tfUsername.setText("");
-                pfPassword.setText("");
-            }
-        }
-        else{
+        } else if(admin.getUsername().equals(tfUsername.getText()) && admin.getPassword().equals(new String(pfPassword.getPassword()))){
+            new AdminPage().setVisible(true);
+            this.dispose();
+        } else{
             JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
             tfUsername.setText("");
             pfPassword.setText("");
@@ -244,21 +195,14 @@ public class LoginPage extends javax.swing.JFrame {
     }
     
     private void btnKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKasirActionPerformed
-        if(tfUsername.getText().isEmpty()||pfPassword.getText().isEmpty()) {
+        if(tfUsername.getText().isEmpty()||pfPassword.getPassword().length == 0) {
             JOptionPane.showMessageDialog(this, "Username atau password tidak boleh kosong", "Message", JOptionPane.INFORMATION_MESSAGE);
             tfUsername.setText("");
             pfPassword.setText("");
-        } else if(Sistem.getUser(tfUsername.getText()) != null && Sistem.getUser(tfUsername.getText()).getPass().equals(pfPassword.getText())){
-            User user = Sistem.getUser(tfUsername.getText());
-            if(user.getJob().equals("kasir")){
-                new CashierPage().setVisible(true);
-                this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
-                tfUsername.setText("");
-                pfPassword.setText("");
-            }
-        }else{
+        } else if(cekAkunKasir(CashierSystem.getUsers(), tfUsername.getText(), new String(pfPassword.getPassword())) == true){
+            new CashierPage().setVisible(true);
+            this.dispose();
+        } else{
             JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
             tfUsername.setText("");
             pfPassword.setText("");

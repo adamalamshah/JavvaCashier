@@ -1,4 +1,6 @@
+import java.io.*;
 import java.util.*;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -10,10 +12,28 @@ import java.util.*;
  *
  * @author Galih
  */
-public class CashierSystem {
+class CashierSystem {
     private static List<User> users = new ArrayList<>();
     private static List<Produk> produkList = new ArrayList<>();
 
+    public static void loadUserData() {
+        users.clear();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("DataAccount.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] dataAccount = line.split(",");
+                if (dataAccount.length == 2) {
+                    String username = dataAccount[0].trim();
+                    String password = dataAccount[1].trim();
+                    users.add(new User(username, password));
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan dalam membaca file", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     public static void addUser(User user) {
         users.add(user);
     }
@@ -47,26 +67,14 @@ public class CashierSystem {
 }
 
 class User {
-    private String id;
-    private String nama;
     private String username;
     private String password;
-    private String role;
 
-    public User(String id, String nama, String username, String password, String role) {
-        this.id = id;
-        this.nama = nama;
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.role = role;
     }
 
-    public String getId() {
-        return id;
-    }
-    public String getNama() {
-        return nama;
-    }
     public String getUsername() {
         return username;
     }
@@ -79,21 +87,15 @@ class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getRole() {
-        return role;
-    }
-    public void setRole(String role) {
-        this.role = role;
-    }
 }
 class Admin extends User {
-    public Admin(String id, String nama, String username, String password) {
-        super(id, nama, username, password, "admin");
+    public Admin() {
+        super("Admin", "Admin1234");
     }
 }
 class Kasir extends User {
-    public Kasir(String id, String nama, String username, String password) {
-        super(id, nama, username, password, "kasir");
+    public Kasir(String username, String password) {
+        super(username, password);
     }
 }
 
