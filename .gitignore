@@ -9,7 +9,7 @@ nbdist/
 *.class
 *.jar
 
-# Sistem (macOS & Windows)
+# Sistem
 .DS_Store
 Thumbs.db
 
