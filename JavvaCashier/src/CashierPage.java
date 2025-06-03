@@ -89,9 +89,9 @@ public class CashierPage extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 239, Short.MAX_VALUE)
                 .addComponent(logo)
-                .addGap(123, 123, 123)
+                .addGap(121, 121, 121)
                 .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
+                .addGap(9, 9, 9)
                 .addComponent(jLabel2)
                 .addGap(10, 10, 10))
         );
