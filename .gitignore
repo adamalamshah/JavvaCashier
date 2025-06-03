@@ -8,7 +8,6 @@ dist/
 nbdist/
 *.class
 *.jar
-*.form
 
 # Sistem
 .DS_Store
