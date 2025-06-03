@@ -735,6 +735,11 @@ public class AdminPage extends javax.swing.JFrame {
         tfPassword.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         tfPassword.setForeground(new java.awt.Color(0, 0, 0));
         tfPassword.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        tfPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfPasswordActionPerformed(evt);
+            }
+        });
 
         btnTambahKasir.setBackground(new java.awt.Color(255, 255, 255));
         btnTambahKasir.setFont(new java.awt.Font("Poppins", 1, 12)); // NOI18N
@@ -795,6 +800,11 @@ public class AdminPage extends javax.swing.JFrame {
         tfHapusKasir.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         tfHapusKasir.setForeground(new java.awt.Color(0, 0, 0));
         tfHapusKasir.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        tfHapusKasir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfHapusKasirActionPerformed(evt);
+            }
+        });
 
         lblDelByUsername.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         lblDelByUsername.setForeground(new java.awt.Color(255, 255, 255));
@@ -886,7 +896,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(pnlAturKasirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(pnlAturKasirLayout.createSequentialGroup()
-                        .addComponent(pnlTambahKasir, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                        .addComponent(pnlTambahKasir, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(pnlHapusKasir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlTabelKasir, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -948,13 +958,17 @@ public class AdminPage extends javax.swing.JFrame {
     private void btnHapusKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusKasirActionPerformed
         DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
         DefaultTableModel modelHome = (DefaultTableModel) tableKasirHome.getModel();
+        String usernameToDelete = tfHapusKasir.getText();
 
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getValueAt(i, 0).equals(tfHapusKasir.getText())) {
-                model.removeRow(i);
-                modelHome.removeRow(i);
-                JOptionPane.showMessageDialog(this, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
-                break;
+            if (model.getValueAt(i, 0).equals(usernameToDelete)) {
+            model.removeRow(i);
+            modelHome.removeRow(i);
+
+            CashierSystem.getUsers().removeIf(user -> user.getUsername().equals(usernameToDelete));
+
+            JOptionPane.showMessageDialog(this, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
+            break;
             }
             else if (i == model.getRowCount() - 1) {
                 JOptionPane.showMessageDialog(this, "Kasir tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
@@ -1021,13 +1035,14 @@ public class AdminPage extends javax.swing.JFrame {
         } else {
             Kasir kasir = new Kasir(username, password);
             CashierSystem.addUser(kasir);
-            JOptionPane.showMessageDialog(this, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
             
             DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
             DefaultTableModel modelHome = (DefaultTableModel) tableKasirHome.getModel();
             model.addRow(new Object[]{username});
             modelHome.addRow(new Object[]{username});
 
+            JOptionPane.showMessageDialog(this, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
+            
             lblTotalKasir.setText(String.valueOf(model.getRowCount()));
             
             tfUsername.setText("");
@@ -1046,8 +1061,16 @@ public class AdminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_tfHargaProdukActionPerformed
 
     private void tfUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfUsernameActionPerformed
-        // TODO add your handling code here:
+        tfPassword.requestFocus();
     }//GEN-LAST:event_tfUsernameActionPerformed
+
+    private void tfPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPasswordActionPerformed
+        btnTambahKasir.doClick();
+    }//GEN-LAST:event_tfPasswordActionPerformed
+
+    private void tfHapusKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfHapusKasirActionPerformed
+        btnHapusKasir.doClick();
+    }//GEN-LAST:event_tfHapusKasirActionPerformed
 
     private void saveProdukToFile() {
         try {
@@ -1072,19 +1095,24 @@ public class AdminPage extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     private void saveKasirToFile() {
-        try (FileWriter fw = new FileWriter("DataAccount.txt");
-             PrintWriter pw = new PrintWriter(fw)) {
-            
+        try {
+            FileWriter fw = new FileWriter("DataAccount.txt", false);
+            PrintWriter pw = new PrintWriter(fw);
+            pw.println("Username,Password");
+
             for(User user : CashierSystem.getUsers()) {
-                String username = user.getUsername();
-                String password = user.getPassword();
-                pw.println(username + "," + password);
+                if (user instanceof Kasir) {
+                    String username = user.getUsername();
+                    String password = user.getPassword();
+                    pw.println(username + "," + password);
+                }
             }
-            
+
+            pw.close();
         } catch(IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
