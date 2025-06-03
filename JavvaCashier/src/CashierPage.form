@@ -194,6 +194,9 @@
                   <Dimension value="[64, 24]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfInputProdukActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblInputQty">
               <Properties>
@@ -237,6 +240,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Tambah"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTambahActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnLogout">
               <Properties>
@@ -398,9 +404,9 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="lblTotal" min="-2" pref="34" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="tfTotal" min="-2" pref="170" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="tfTotal" min="-2" pref="149" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>

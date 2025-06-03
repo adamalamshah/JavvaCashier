@@ -45,7 +45,7 @@ public class AdminPage extends javax.swing.JFrame {
         btnLogout.setFocusPainted(false);
 
         loadProdukFromFile();
-        // loadKasirFromFile();
+        loadKasirFromFile();
 
         cardLayout = (CardLayout)(pnlCards.getLayout());
     }
@@ -102,15 +102,11 @@ public class AdminPage extends javax.swing.JFrame {
         pnlAturKasir = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        tfIDKasir = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         tfUsername = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         tfPassword = new javax.swing.JTextField();
         btnTambahKasir = new javax.swing.JButton();
-        jLabel19 = new javax.swing.JLabel();
-        tfNamaKasir = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         tfHapusKasir = new javax.swing.JTextField();
@@ -313,11 +309,11 @@ public class AdminPage extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nama", "Username"
+                "Username"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -604,9 +600,6 @@ public class AdminPage extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Tambah Kasir");
 
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("ID Kasir");
-
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Username");
 
@@ -620,9 +613,6 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
 
-        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel19.setText("Nama");
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -633,19 +623,15 @@ public class AdminPage extends javax.swing.JFrame {
                         .addGap(44, 44, 44)
                         .addComponent(jLabel10))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
+                        .addGap(19, 19, 19)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfIDKasir, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11)
                             .addComponent(tfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel12)
                             .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(btnTambahKasir))
-                            .addComponent(tfNamaKasir, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel19))))
+                            .addComponent(jLabel13)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(btnTambahKasir)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -653,15 +639,7 @@ public class AdminPage extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfIDKasir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel19)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfNamaKasir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -669,9 +647,9 @@ public class AdminPage extends javax.swing.JFrame {
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addComponent(btnTambahKasir)
-                .addGap(52, 52, 52))
+                .addGap(29, 29, 29))
         );
 
         jPanel7.setBackground(new java.awt.Color(0, 0, 51));
@@ -681,7 +659,7 @@ public class AdminPage extends javax.swing.JFrame {
         jLabel14.setText("Hapus Kasir");
 
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("ID Kasir");
+        jLabel15.setText("Username");
 
         btnHapusKasir.setText("Hapus");
         btnHapusKasir.addActionListener(new java.awt.event.ActionListener() {
@@ -753,11 +731,11 @@ public class AdminPage extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nama", "Username"
+                "Username"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -787,7 +765,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlAturKasirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlAturKasirLayout.createSequentialGroup()
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -827,10 +805,13 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void btnHapusProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusProdukActionPerformed
         DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
+        DefaultTableModel modelHome = (DefaultTableModel) tableProdukHome.getModel();
         
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getValueAt(i, 0).equals(tfHapusProduk.getText())) {
                 model.removeRow(i);
+                modelHome.removeRow(i);
+
                 JOptionPane.showMessageDialog(this, "Produk berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
                 break;
             }
@@ -846,10 +827,12 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void btnHapusKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusKasirActionPerformed
         DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
+        DefaultTableModel modelHome = (DefaultTableModel) tableKasirHome.getModel();
 
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getValueAt(i, 0).equals(tfHapusKasir.getText())) {
                 model.removeRow(i);
+                modelHome.removeRow(i);
                 JOptionPane.showMessageDialog(this, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
                 break;
             }
@@ -860,7 +843,7 @@ public class AdminPage extends javax.swing.JFrame {
 
         lblTotalKasir.setText(String.valueOf(model.getRowCount()));
         tfHapusKasir.setText("");
-//         saveKasirToFile();
+        saveKasirToFile();
     }//GEN-LAST:event_btnHapusKasirActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -885,7 +868,10 @@ public class AdminPage extends javax.swing.JFrame {
                 double harga = Double.parseDouble(tfHarga.getText());
 
                 DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
+                DefaultTableModel modelHome = (DefaultTableModel) tableProdukHome.getModel();
                 model.addRow(new Object[]{id, nama, harga});
+                modelHome.addRow(new Object[]{id, nama, harga});
+
                 JOptionPane.showMessageDialog(this, "Produk berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
 
                 lblTotalProduk.setText(String.valueOf(model.getRowCount()));
@@ -907,27 +893,27 @@ public class AdminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_tfHapusProdukActionPerformed
 
     private void btnTambahKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahKasirActionPerformed
-        String id = tfIDKasir.getText();
-        String nama = tfNamaKasir.getText();
         String username = tfUsername.getText();
         String password = tfPassword.getText();
 
-        if (id.isEmpty() || nama.isEmpty() || username.isEmpty() || password.isEmpty()) {
+        if (username.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua field", "Message", JOptionPane.ERROR_MESSAGE);
         } else {
-            Kasir kasir = new Kasir(id, nama, username, password);
+            Kasir kasir = new Kasir(username, password);
             CashierSystem.addUser(kasir);
             JOptionPane.showMessageDialog(this, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
             
             DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
-            model.addRow(new Object[]{id, nama, username});
+            DefaultTableModel modelHome = (DefaultTableModel) tableKasirHome.getModel();
+            model.addRow(new Object[]{username});
+            modelHome.addRow(new Object[]{username});
+
+            lblTotalKasir.setText(String.valueOf(model.getRowCount()));
             
-            lblTotalKasir.setText(String.valueOf(CashierSystem.getUsers().size()));
-            
-            tfIDKasir.setText("");
-            tfNamaKasir.setText("");
             tfUsername.setText("");
             tfPassword.setText("");
+
+            saveKasirToFile();
         }
     }//GEN-LAST:event_btnTambahKasirActionPerformed
 
@@ -955,33 +941,20 @@ public class AdminPage extends javax.swing.JFrame {
         }
     }
 
-    // private void saveKasirToFile() {
-    //     try {
-    //         FileWriter fw = new FileWriter("DataKasir.txt");
-    //         PrintWriter pw = new PrintWriter(fw);
+    private void saveKasirToFile() {
+        try (FileWriter fw = new FileWriter("DataAccount.txt");
+             PrintWriter pw = new PrintWriter(fw)) {
             
-    //         DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
-    //         int rowCount = model.getRowCount();
+            for(User user : CashierSystem.getUsers()) {
+                String username = user.getUsername();
+                String password = user.getPassword();
+                pw.println(username + "," + password);
+            }
             
-    //         // Write header
-    //         pw.println("ID,Nama,Username");
-            
-    //         // Write data
-    //         for(int i = 0; i < rowCount; i++) {
-    //             String id = model.getValueAt(i, 0).toString();
-    //             String nama = model.getValueAt(i, 1).toString();
-    //             String username = model.getValueAt(i, 2).toString();
-                
-    //             pw.println(id + "," + nama + "," + username);
-    //         }
-            
-    //         pw.close();
-    //         JOptionPane.showMessageDialog(this, "Data kasir berhasil disimpan ke file", "Success", JOptionPane.INFORMATION_MESSAGE);
-            
-    //     } catch(IOException ex) {
-    //         JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    //     }
-    // }
+        } catch(IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void loadProdukFromFile() {
         try {
@@ -996,6 +969,7 @@ public class AdminPage extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
             DefaultTableModel modelHome = (DefaultTableModel) tableProdukHome.getModel();
             model.setRowCount(0);
+            modelHome.setRowCount(0);
             
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
@@ -1013,7 +987,7 @@ public class AdminPage extends javax.swing.JFrame {
             }
             
             br.close();
-            lblTotalProduk.setText(String.valueOf(CashierSystem.getProdukList().size()));
+            lblTotalProduk.setText(String.valueOf(model.getRowCount()));
             
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error loading produk data: " + ex.getMessage(), 
@@ -1021,42 +995,43 @@ public class AdminPage extends javax.swing.JFrame {
         }
     }
 
-    // private void loadKasirFromFile() {
-    //     try {
-    //         File file = new File("DataKasir.txt");
-    //         if (!file.exists()) {
-    //             return;
-    //         }
+    private void loadKasirFromFile() {
+        try {
+            File file = new File("DataAccount.txt");
+            if (!file.exists()) {
+                return;
+            }
             
-    //         BufferedReader br = new BufferedReader(new FileReader(file));
-    //         String line = br.readLine();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line = br.readLine();
             
-    //         DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
-    //         model.setRowCount(0);
-            
-    //         while ((line = br.readLine()) != null) {
-    //             String[] data = line.split(",");
-    //             if (data.length == 3) {
-    //                 String id = data[0];
-    //                 String nama = data[1];
-    //                 String username = data[2];
-                    
-    //                 model.addRow(new Object[]{id, nama, username});
-                    
+            DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
+            DefaultTableModel modelHome = (DefaultTableModel) tableKasirHome.getModel();
+            model.setRowCount(0);
+            modelHome.setRowCount(0);
 
-    //                 Kasir kasir = new Kasir(id, nama, username, "password");
-    //                 CashierSystem.addUser(kasir);
-    //             }
-    //         }
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length == 2) {
+                    String username = data[0].trim();
+                    String password = data[1].trim();
+
+                    model.addRow(new Object[]{username});
+                    modelHome.addRow(new Object[]{username});
+
+                    Kasir kasir = new Kasir(username, password);
+                    CashierSystem.addUser(kasir);
+                }
+            }
             
-    //         br.close();
-    //         lblTotalKasir.setText(String.valueOf(CashierSystem.getUsers().size()));
+            br.close();
+            lblTotalKasir.setText(String.valueOf(model.getRowCount()));
             
-    //     } catch (IOException ex) {
-    //         JOptionPane.showMessageDialog(this, "Error loading kasir data: " + ex.getMessage(), 
-    //             "Error", JOptionPane.ERROR_MESSAGE);
-    //     }
-    // }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error loading kasir data: " + ex.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
                          
     /**
      * @param args the command line arguments
@@ -1105,14 +1080,12 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JButton btnTambahProduk;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
@@ -1150,9 +1123,7 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JTextField tfHapusProduk;
     private javax.swing.JTextField tfHarga;
     private javax.swing.JLabel tfHargaProduk;
-    private javax.swing.JTextField tfIDKasir;
     private javax.swing.JTextField tfIDProduk;
-    private javax.swing.JTextField tfNamaKasir;
     private javax.swing.JTextField tfNamaProduk;
     private javax.swing.JTextField tfPassword;
     private javax.swing.JTextField tfUsername;
