@@ -90,7 +90,7 @@ class User {
 }
 class Admin extends User {
     public Admin() {
-        super("Admin", "Admin1234");
+        super("admin", "admin");
     }
 }
 class Kasir extends User {
