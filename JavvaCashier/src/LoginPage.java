@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 public class LoginPage extends javax.swing.JFrame {
     
     static Admin admin = new Admin();
+    static AdminPage adminPage = new AdminPage();
+    static CashierPage cashierPage = new CashierPage();
 
     static boolean cekAkunKasir(List<User> users, String username, String password){
         for (User user : users) {
@@ -186,7 +188,8 @@ public class LoginPage extends javax.swing.JFrame {
             tfUsername.setText("");
             pfPassword.setText("");
         } else if(cekAkunKasir(CashierSystem.getUsers(), tfUsername.getText(), new String(pfPassword.getPassword())) == true){
-            new CashierPage().setVisible(true);
+            cashierPage.getLblUser().setText(tfUsername.getText().trim());
+            cashierPage.setVisible(true);
             this.dispose();
         } else{
             JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
@@ -201,7 +204,7 @@ public class LoginPage extends javax.swing.JFrame {
             tfUsername.setText("");
             pfPassword.setText("");
         } else if(admin.getUsername().equals(tfUsername.getText()) && admin.getPassword().equals(new String(pfPassword.getPassword()))){
-            new AdminPage().setVisible(true);
+            adminPage.setVisible(true);
             this.dispose();
         } else{
             JOptionPane.showMessageDialog(this, "Username atau password salah", "Message", JOptionPane.INFORMATION_MESSAGE);
@@ -253,7 +256,7 @@ public class LoginPage extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the form */       
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new LoginPage().setVisible(true);

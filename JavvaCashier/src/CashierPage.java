@@ -1,3 +1,6 @@
+
+import javax.swing.JLabel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -32,6 +35,7 @@ public class CashierPage extends javax.swing.JFrame {
         logo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        lblUser = new javax.swing.JLabel();
         panelKiri = new javax.swing.JPanel();
         lblTambahProduk = new javax.swing.JLabel();
         lblInputProduk = new javax.swing.JLabel();
@@ -70,6 +74,12 @@ public class CashierPage extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user.png"))); // NOI18N
 
+        lblUser.setBackground(new java.awt.Color(255, 255, 255));
+        lblUser.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        lblUser.setForeground(new java.awt.Color(0, 0, 0));
+        lblUser.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblUser.setText("User");
+
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
@@ -77,9 +87,11 @@ public class CashierPage extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 239, Short.MAX_VALUE)
                 .addComponent(logo)
-                .addGap(230, 230, 230)
+                .addGap(123, 123, 123)
+                .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
                 .addComponent(jLabel2)
                 .addGap(10, 10, 10))
         );
@@ -95,8 +107,13 @@ public class CashierPage extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap(10, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(8, 8, 8))
+                .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(8, 8, 8))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
+                        .addComponent(lblUser)
+                        .addGap(10, 10, 10))))
         );
 
         panelKiri.setBackground(new java.awt.Color(56, 76, 120));
@@ -133,6 +150,7 @@ public class CashierPage extends javax.swing.JFrame {
         btnTambah.setFont(new java.awt.Font("Poppins", 1, 12)); // NOI18N
         btnTambah.setForeground(new java.awt.Color(0, 0, 0));
         btnTambah.setText("Tambah");
+        btnTambah.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTambahActionPerformed(evt);
@@ -168,11 +186,12 @@ public class CashierPage extends javax.swing.JFrame {
                             .addComponent(tfInputProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblInputQty)
                             .addComponent(tfInputQty, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnLogout)))
-                    .addGroup(panelKiriLayout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(btnTambah)))
+                            .addComponent(btnLogout))))
                 .addContainerGap(21, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelKiriLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61))
         );
         panelKiriLayout.setVerticalGroup(
             panelKiriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -404,6 +423,10 @@ public class CashierPage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public JLabel getLblUser() {
+        return lblUser;
+    }
+    
     private void btnKonfirmasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKonfirmasiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnKonfirmasiActionPerformed
@@ -481,6 +504,7 @@ public class CashierPage extends javax.swing.JFrame {
     private javax.swing.JLabel lblPembayaran;
     private javax.swing.JLabel lblTambahProduk;
     private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblUser;
     private javax.swing.JLabel logo;
     private javax.swing.JPanel panelBg;
     private javax.swing.JPanel panelHeader;
