@@ -1,1 +1,19 @@
 /JavvaCashier/build/
+
+# NetBeans & Java build output
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+*.class
+*.jar
+
+# Sistem (macOS & Windows)
+.DS_Store
+Thumbs.db
+
+# File sementara / log
+*.log
+*.tmp
+*.bak
