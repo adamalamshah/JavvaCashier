@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 class CashierSystem {
     private static List<User> users = new ArrayList<>();
     private static List<Produk> produkList = new ArrayList<>();
+    private static List<Keranjang> keranjangList = new ArrayList<>();
 
     public static void loadUserData() {
         users.clear();
@@ -60,6 +61,25 @@ class CashierSystem {
         for (Produk produk : produkList) {
             if (produk.getId().equals(id)) {
                 return produk;
+            }
+        }
+        return null;
+    }
+    public static Produk getProdukByNama(String nama) {
+        for (Produk produk : produkList) {
+            if (produk.getNama().equals(nama)) {
+                return produk;
+            }
+        }
+        return null;
+    }
+    public static void addKeranjang(Keranjang keranjang){
+        keranjangList.add(keranjang);
+    }
+    public static Keranjang getKeranjangByID(String id) {
+        for (Keranjang keranjang : keranjangList) {
+            if (keranjang.getId().equals(id)) {
+                return keranjang;
             }
         }
         return null;
@@ -128,4 +148,45 @@ class Produk {
     public void setHarga(double harga) {
         this.harga = harga;
     }
+}
+
+class Keranjang {
+    private String id;
+    private String nama;
+    private double harga;
+    private int qty;
+    private double subtotal;
+    private static double total = 0.0;
+
+    public Keranjang(String id, String nama, double harga, int qty, double subtotal) {
+        this.id = id;
+        this.nama = nama;
+        this.harga = harga;
+        this.qty = qty;
+        this.subtotal = subtotal;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public String getNama() {
+        return nama;
+    }
+    public double getHarga() {
+        return harga;
+    }
+    public int getQty() {
+        return qty;
+    }
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public static double getTotal() {
+        return total;
+    }
+    public static void setTotal(double total) {
+        Keranjang.total = total;
+    }
+    
 }

@@ -1,5 +1,7 @@
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -46,7 +48,7 @@ public class CashierPage extends javax.swing.JFrame {
         btnLogout = new javax.swing.JButton();
         panelKanan = new javax.swing.JPanel();
         jScrollPaneTabel = new javax.swing.JScrollPane();
-        TabelKeranjang = new javax.swing.JTable();
+        tabelKeranjang = new javax.swing.JTable();
         panelTotal = new javax.swing.JPanel();
         lblTotal = new javax.swing.JLabel();
         tfTotal = new javax.swing.JTextField();
@@ -89,9 +91,9 @@ public class CashierPage extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 239, Short.MAX_VALUE)
                 .addComponent(logo)
-                .addGap(121, 121, 121)
+                .addGap(123, 123, 123)
                 .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
+                .addGap(7, 7, 7)
                 .addComponent(jLabel2)
                 .addGap(10, 10, 10))
         );
@@ -145,6 +147,11 @@ public class CashierPage extends javax.swing.JFrame {
         tfInputQty.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         tfInputQty.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
         tfInputQty.setPreferredSize(new java.awt.Dimension(64, 24));
+        tfInputQty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfInputQtyActionPerformed(evt);
+            }
+        });
 
         btnTambah.setBackground(new java.awt.Color(255, 255, 255));
         btnTambah.setFont(new java.awt.Font("Poppins", 1, 12)); // NOI18N
@@ -220,15 +227,15 @@ public class CashierPage extends javax.swing.JFrame {
         jScrollPaneTabel.setForeground(new java.awt.Color(239, 239, 239));
         jScrollPaneTabel.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
 
-        TabelKeranjang.setModel(new javax.swing.table.DefaultTableModel(
+        tabelKeranjang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID produk", "Nama produk", "Harga satuan", "Qty", "Subtotal"
             }
         ));
-        jScrollPaneTabel.setViewportView(TabelKeranjang);
+        jScrollPaneTabel.setViewportView(tabelKeranjang);
 
         panelTotal.setBackground(new java.awt.Color(56, 76, 120));
         panelTotal.setPreferredSize(new java.awt.Dimension(250, 33));
@@ -237,6 +244,7 @@ public class CashierPage extends javax.swing.JFrame {
         lblTotal.setForeground(new java.awt.Color(255, 255, 255));
         lblTotal.setText("Total");
 
+        tfTotal.setEditable(false);
         tfTotal.setBackground(new java.awt.Color(255, 255, 255));
         tfTotal.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         tfTotal.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
@@ -354,7 +362,7 @@ public class CashierPage extends javax.swing.JFrame {
         panelKananLayout.setHorizontalGroup(
             panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelKananLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(17, 17, 17)
                 .addGroup(panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelKananLayout.createSequentialGroup()
                         .addGroup(panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -365,7 +373,7 @@ public class CashierPage extends javax.swing.JFrame {
                             .addComponent(btnKonfirmasi, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBatalkan, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPaneTabel, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         panelKananLayout.setVerticalGroup(
             panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -445,12 +453,46 @@ public class CashierPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void tfInputProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfInputProdukActionPerformed
-        // TODO add your handling code here:
+        tfInputQty.requestFocus();
     }//GEN-LAST:event_tfInputProdukActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
-        // TODO add your handling code here:
+        String produk = tfInputProduk.getText();
+        String qty = tfInputQty.getText();
+
+        try {
+            if (produk.isEmpty()||qty.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Isi semua field", "Message", JOptionPane.ERROR_MESSAGE);        
+            }
+            else{
+                DefaultTableModel model = (DefaultTableModel) tabelKeranjang.getModel();
+                Produk item;
+                if (Character.isDigit(produk.charAt(0))){
+                    item = CashierSystem.getProdukByID(produk);
+                }
+                else {
+                    item = CashierSystem.getProdukByNama(produk);
+                }
+                double subtotal = Double.parseDouble(qty) * item.getHarga();
+                Keranjang.setTotal(Keranjang.getTotal() + subtotal);
+                model.addRow(new Object[]{item.getId(), item.getNama(), item.getHarga(), qty, subtotal});
+                tfTotal.setText(String.format("%.2f", Keranjang.getTotal()));
+
+
+                tfInputProduk.setText("");
+                tfInputQty.setText("");
+            }
+        } catch (NullPointerException e){
+            JOptionPane.showMessageDialog(this, "Produk tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
+            tfInputProduk.setText("");
+            tfInputQty.setText("");
+        }
     }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void tfInputQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfInputQtyActionPerformed
+        btnTambah.doClick();
+        tfInputProduk.requestFocus();
+    }//GEN-LAST:event_tfInputQtyActionPerformed
 
     /**
      * @param args the command line arguments
@@ -488,7 +530,6 @@ public class CashierPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TabelKeranjang;
     private javax.swing.JButton btnBatalkan;
     private javax.swing.JButton btnKonfirmasi;
     private javax.swing.JButton btnLogout;
@@ -512,6 +553,7 @@ public class CashierPage extends javax.swing.JFrame {
     private javax.swing.JPanel panelKiri;
     private javax.swing.JPanel panelPembayaran;
     private javax.swing.JPanel panelTotal;
+    private javax.swing.JTable tabelKeranjang;
     private javax.swing.JTextField tfInputJumlah;
     private javax.swing.JTextField tfInputProduk;
     private javax.swing.JTextField tfInputQty;
