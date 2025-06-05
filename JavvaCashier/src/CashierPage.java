@@ -1,4 +1,9 @@
 
+import java.io.*;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -319,7 +324,7 @@ public class CashierPage extends javax.swing.JFrame {
                         .addComponent(lblInputJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfInputJumlah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         panelPembayaranLayout.setVerticalGroup(
             panelPembayaranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,23 +368,23 @@ public class CashierPage extends javax.swing.JFrame {
             panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelKananLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPaneTabel, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
                     .addGroup(panelKananLayout.createSequentialGroup()
                         .addGroup(panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(panelPembayaran, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-                            .addComponent(panelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(panelPembayaran, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                            .addComponent(panelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnKonfirmasi, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBatalkan, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPaneTabel, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnBatalkan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnKonfirmasi, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         panelKananLayout.setVerticalGroup(
             panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelKananLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jScrollPaneTabel, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPaneTabel, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelKananLayout.createSequentialGroup()
@@ -404,7 +409,7 @@ public class CashierPage extends javax.swing.JFrame {
                 .addComponent(panelKiri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(panelKanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelBgLayout.setVerticalGroup(
             panelBgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -436,11 +441,43 @@ public class CashierPage extends javax.swing.JFrame {
     }
     
     private void btnKonfirmasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKonfirmasiActionPerformed
-        // TODO add your handling code here:
+        try {
+            DefaultTableModel model = (DefaultTableModel) tabelKeranjang.getModel();
+            String namaFileTransaksi = "trancaction " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm")) + ".txt";
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File("log transaksi", namaFileTransaksi)));
+            
+            bw.write("ID\tNama Produk\t\tHarga Satuan\tQTY\tSubtotal\n");
+            for (int i = 0; i < model.getRowCount(); i++) {
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    bw.write(model.getValueAt(i, j).toString().trim());
+                    if (j == 1 || j == 2){
+                        bw.write("\t\t");
+                    }
+                    else{
+                        bw.write("\t");
+                    }
+                    
+                }
+                bw.newLine();
+            }
+            
+            bw.close();
+            
+            //line untuk menampilkan pop up nota
+            
+            
+            model.setRowCount(0);
+            CashierSystem.clearKeranjang();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnKonfirmasiActionPerformed
 
     private void btnBatalkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalkanActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tabelKeranjang.getModel();
+        model.setRowCount(0);
+        tfTotal.setText("");
+        CashierSystem.clearKeranjang();
     }//GEN-LAST:event_btnBatalkanActionPerformed
 
     private void cbInputMetodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbInputMetodeActionPerformed
@@ -448,6 +485,9 @@ public class CashierPage extends javax.swing.JFrame {
     }//GEN-LAST:event_cbInputMetodeActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tabelKeranjang.getModel();
+        model.setRowCount(0);
+        CashierSystem.clearKeranjang();
         new LoginPage().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
@@ -457,8 +497,8 @@ public class CashierPage extends javax.swing.JFrame {
     }//GEN-LAST:event_tfInputProdukActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
-        String produk = tfInputProduk.getText();
-        String qty = tfInputQty.getText();
+        String produk = tfInputProduk.getText().trim();
+        String qty = tfInputQty.getText().trim();
 
         try {
             if (produk.isEmpty()||qty.isEmpty()) {
