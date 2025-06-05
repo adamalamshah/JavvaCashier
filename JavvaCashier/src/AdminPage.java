@@ -896,7 +896,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(pnlAturKasirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(pnlAturKasirLayout.createSequentialGroup()
-                        .addComponent(pnlTambahKasir, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                        .addComponent(pnlTambahKasir, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(pnlHapusKasir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlTabelKasir, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -953,22 +953,20 @@ public class AdminPage extends javax.swing.JFrame {
         lblTotalProduk.setText(String.valueOf(model.getRowCount()));
         tfHapusProduk.setText("");
         saveProdukToFile();
+        CashierSystem.getProdukList().clear();
+        loadProdukFromFile();
     }//GEN-LAST:event_btnHapusProdukActionPerformed
 
     private void btnHapusKasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusKasirActionPerformed
         DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
         DefaultTableModel modelHome = (DefaultTableModel) tableKasirHome.getModel();
-        String usernameToDelete = tfHapusKasir.getText();
 
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getValueAt(i, 0).equals(usernameToDelete)) {
-            model.removeRow(i);
-            modelHome.removeRow(i);
-
-            CashierSystem.getUsers().removeIf(user -> user.getUsername().equals(usernameToDelete));
-
-            JOptionPane.showMessageDialog(this, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
-            break;
+            if (model.getValueAt(i, 0).equals(tfHapusKasir.getText())) {
+                model.removeRow(i);
+                modelHome.removeRow(i);
+                JOptionPane.showMessageDialog(this, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
+                break;
             }
             else if (i == model.getRowCount() - 1) {
                 JOptionPane.showMessageDialog(this, "Kasir tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
@@ -978,6 +976,8 @@ public class AdminPage extends javax.swing.JFrame {
         lblTotalKasir.setText(String.valueOf(model.getRowCount()));
         tfHapusKasir.setText("");
         saveKasirToFile();
+        CashierSystem.getUsers().clear();
+        loadKasirFromFile();
     }//GEN-LAST:event_btnHapusKasirActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -1035,14 +1035,13 @@ public class AdminPage extends javax.swing.JFrame {
         } else {
             Kasir kasir = new Kasir(username, password);
             CashierSystem.addUser(kasir);
+            JOptionPane.showMessageDialog(this, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
             
             DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
             DefaultTableModel modelHome = (DefaultTableModel) tableKasirHome.getModel();
             model.addRow(new Object[]{username});
             modelHome.addRow(new Object[]{username});
 
-            JOptionPane.showMessageDialog(this, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
-            
             lblTotalKasir.setText(String.valueOf(model.getRowCount()));
             
             tfUsername.setText("");
@@ -1080,8 +1079,6 @@ public class AdminPage extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
             int rowCount = model.getRowCount();
             
-            pw.println("ID,Nama,Harga");
-            
             for(int i = 0; i < rowCount; i++) {
                 String id = model.getValueAt(i, 0).toString();
                 String nama = model.getValueAt(i, 1).toString();
@@ -1095,24 +1092,31 @@ public class AdminPage extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     private void saveKasirToFile() {
         try {
-            FileWriter fw = new FileWriter("DataAccount.txt", false);
+            FileWriter fw = new FileWriter("DataAccount.txt");
             PrintWriter pw = new PrintWriter(fw);
-            pw.println("Username,Password");
-
-            for(User user : CashierSystem.getUsers()) {
-                if (user instanceof Kasir) {
-                    String username = user.getUsername();
-                    String password = user.getPassword();
-                    pw.println(username + "," + password);
+            
+            DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
+            int rowCount = model.getRowCount();
+            
+            for(int i = 0; i < rowCount; i++) {
+                String nama = model.getValueAt(i, 0).toString();
+                String password = "";
+                for(User user : CashierSystem.getUsers()) {
+                    if (user.getUsername().equals(nama)) {
+                        password = user.getPassword();
+                        break;
+                    }
                 }
+                pw.println(nama + "," + password);
             }
-
+            
             pw.close();
+            
         } catch(IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), 
-                "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -1124,13 +1128,13 @@ public class AdminPage extends javax.swing.JFrame {
             }
             
             BufferedReader br = new BufferedReader(new FileReader(file));
-            String line = br.readLine();
             
             DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
             DefaultTableModel modelHome = (DefaultTableModel) tableProdukHome.getModel();
             model.setRowCount(0);
             modelHome.setRowCount(0);
             
+            String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data.length == 3) {
@@ -1163,13 +1167,13 @@ public class AdminPage extends javax.swing.JFrame {
             }
             
             BufferedReader br = new BufferedReader(new FileReader(file));
-            String line = br.readLine();
             
             DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
             DefaultTableModel modelHome = (DefaultTableModel) tableKasirHome.getModel();
             model.setRowCount(0);
             modelHome.setRowCount(0);
-
+            
+            String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data.length == 2) {
