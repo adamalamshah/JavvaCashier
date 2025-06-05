@@ -1015,6 +1015,8 @@ public class AdminPage extends javax.swing.JFrame {
                 tfHargaProduk.setText("");
 
                 saveProdukToFile();
+                CashierSystem.getProdukList().clear();
+                loadProdukFromFile();
             }
         }
         catch(NumberFormatException e){
@@ -1048,6 +1050,8 @@ public class AdminPage extends javax.swing.JFrame {
             tfPassword.setText("");
 
             saveKasirToFile();
+            CashierSystem.getUsers().clear();
+            loadKasirFromFile();
         }
     }//GEN-LAST:event_btnTambahKasirActionPerformed
 

@@ -172,6 +172,7 @@ public class CashierPage extends javax.swing.JFrame {
         btnLogout.setBackground(new java.awt.Color(56, 76, 120));
         btnLogout.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logout-icon.png"))); // NOI18N
         btnLogout.setText("Logout");
         btnLogout.setBorder(null);
         btnLogout.setBorderPainted(false);
@@ -373,7 +374,7 @@ public class CashierPage extends javax.swing.JFrame {
                     .addGroup(panelKananLayout.createSequentialGroup()
                         .addGroup(panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(panelPembayaran, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-                            .addComponent(panelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(panelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 226, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelKananLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnBatalkan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
