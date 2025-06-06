@@ -84,6 +84,15 @@ class CashierSystem {
         }
         return null;
     }
+
+    static void clearKeranjang() {
+        keranjangList.clear();
+        Keranjang.setTotal(0.0);
+    }
+
+    static List<Keranjang> getKeranjangList() {
+        return keranjangList;
+    }
 }
 
 class User {

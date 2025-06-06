@@ -1,4 +1,5 @@
 
+import java.awt.Font;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
@@ -6,7 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
+import java.awt.print.*;
+import java.util.List;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -307,6 +312,11 @@ public class CashierPage extends javax.swing.JFrame {
         tfInputJumlah.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         tfInputJumlah.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
         tfInputJumlah.setPreferredSize(new java.awt.Dimension(64, 24));
+        tfInputJumlah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfInputJumlahActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelPembayaranLayout = new javax.swing.GroupLayout(panelPembayaran);
         panelPembayaran.setLayout(panelPembayaranLayout);
@@ -340,7 +350,7 @@ public class CashierPage extends javax.swing.JFrame {
                 .addGroup(panelPembayaranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfInputJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblInputJumlah))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         btnKonfirmasi.setBackground(new java.awt.Color(255, 255, 255));
@@ -441,34 +451,89 @@ public class CashierPage extends javax.swing.JFrame {
         return lblUser;
     }
     
+    private void tampilkanNota(List<Keranjang> keranjangList, double pembayaran, double kembalian){
+        StringBuilder nota = new StringBuilder();
+        String namaKasir = getLblUser().getText();
+        String tanggal = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+
+        nota.append("=========== JAVVA CASHIER ===========\n");
+        nota.append("Kasir : ").append(namaKasir).append("\n");
+        nota.append("Tanggal: ").append(tanggal).append("\n");
+        nota.append("-------------------------------------\n");
+        nota.append(String.format("%-5s%-15s%-10s%-5s%-10s\n", "ID", "Nama", "Harga", "Qty", "Subtotal"));
+        nota.append("-------------------------------------\n");
+
+        for (Keranjang item : keranjangList) {
+            nota.append(String.format("%-5s%-15s%-10.2f%-5d%-10.2f\n",
+                        item.getId(), item.getNama(), item.getHarga(), item.getQty(), item.getSubtotal()));
+        }
+
+        nota.append("-------------------------------------\n");
+        nota.append(String.format("TOTAL : Rp %.2f\n", Keranjang.getTotal()));
+        nota.append(String.format("Pembayaran : Rp %.2f\n", pembayaran));
+        nota.append(String.format("Kembalian  : Rp %.2f\n", kembalian));
+        nota.append("=========== TERIMA KASIH ============");
+
+        JTextArea textArea = new JTextArea(nota.toString());
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        JOptionPane.showMessageDialog(this, new JScrollPane(textArea), "Nota Transaksi", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    
     private void btnKonfirmasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKonfirmasiActionPerformed
-        try {
-            DefaultTableModel model = (DefaultTableModel) tabelKeranjang.getModel();
-            String namaFileTransaksi = "trancaction " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm")) + ".txt";
-            BufferedWriter bw = new BufferedWriter(new FileWriter(new File("log transaksi", namaFileTransaksi)));
-            
-            bw.write("ID\tNama Produk\t\tHarga Satuan\tQTY\tSubtotal\n");
-            for (int i = 0; i < model.getRowCount(); i++) {
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    bw.write(model.getValueAt(i, j).toString().trim());
-                    if (j == 1 || j == 2){
-                        bw.write("\t\t");
-                    }
-                    else{
-                        bw.write("\t");
-                    }
-                    
+        double pembayaran = 0;
+        double kembalian = 0;
+        String metodePembayaran = (String) cbInputMetode.getSelectedItem();
+        
+        if (metodePembayaran.equalsIgnoreCase("Cash")) {
+            try {
+                pembayaran = Double.parseDouble(tfInputJumlah.getText());
+                if (pembayaran < Keranjang.getTotal()) {
+                    JOptionPane.showMessageDialog(this, "Pembayaran kurang dari total belanja!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
+                kembalian = pembayaran - Keranjang.getTotal();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Masukkan pembayaran yang valid!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } else {
+            pembayaran = Keranjang.getTotal();
+            kembalian = 0;
+        }
+
+        
+        try {
+            String tanggalWaktu = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss"));
+            String namaFileTransaksi = "transaksi";
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(namaFileTransaksi)));
+
+            bw.write("Tanggal: " + tanggalWaktu + "\n");
+            bw.write("Metode Pembayaran: " + metodePembayaran + "\n");
+            bw.write("Pembayaran: Rp " + String.format("%.2f", pembayaran) + "\n");
+            bw.write("Kembalian: Rp " + String.format("%.2f", kembalian) + "\n");
+            bw.write("===========================================\n");
+            bw.write("ID\tNama Produk\t\tHarga Satuan\tQTY\tSubtotal\n");
+            
+            for (Keranjang item : CashierSystem.getKeranjangList()) {
+                bw.write(item.getId() + "\t" + item.getNama() + "\t\t" + item.getHarga() + "\t" + item.getQty() + "\t" + item.getSubtotal());
                 bw.newLine();
             }
             
+            bw.write("===========================================\n");
+            bw.write(String.format("TOTAL : Rp %.2f\n", Keranjang.getTotal()));
+            bw.write("");
             bw.close();
-            
-            //line untuk menampilkan pop up nota
-            
-            
+             
+            tampilkanNota(CashierSystem.getKeranjangList(), pembayaran, kembalian);
+
+            DefaultTableModel model = (DefaultTableModel) tabelKeranjang.getModel();
             model.setRowCount(0);
+            tfTotal.setText("");
+            tfInputJumlah.setText("");
             CashierSystem.clearKeranjang();
+
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -478,11 +543,19 @@ public class CashierPage extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tabelKeranjang.getModel();
         model.setRowCount(0);
         tfTotal.setText("");
+        tfInputJumlah.setText("");
         CashierSystem.clearKeranjang();
     }//GEN-LAST:event_btnBatalkanActionPerformed
 
     private void cbInputMetodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbInputMetodeActionPerformed
-        
+        String metode = (String) cbInputMetode.getSelectedItem();
+        if (metode.equalsIgnoreCase("Cashless")) {
+            tfInputJumlah.setText(String.format("%.2f", Keranjang.getTotal()));
+            tfInputJumlah.setEditable(false);
+        } else {
+            tfInputJumlah.setText("");
+            tfInputJumlah.setEditable(true);
+        }
     }//GEN-LAST:event_cbInputMetodeActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -517,9 +590,11 @@ public class CashierPage extends javax.swing.JFrame {
                 double subtotal = Double.parseDouble(qty) * item.getHarga();
                 Keranjang.setTotal(Keranjang.getTotal() + subtotal);
                 model.addRow(new Object[]{item.getId(), item.getNama(), item.getHarga(), qty, subtotal});
+                                
+                int quantity = Integer.parseInt(qty);
+                CashierSystem.addKeranjang(new Keranjang(item.getId(), item.getNama(), item.getHarga(), quantity, subtotal));
+
                 tfTotal.setText(String.format("%.2f", Keranjang.getTotal()));
-
-
                 tfInputProduk.setText("");
                 tfInputQty.setText("");
             }
@@ -534,6 +609,10 @@ public class CashierPage extends javax.swing.JFrame {
         btnTambah.doClick();
         tfInputProduk.requestFocus();
     }//GEN-LAST:event_tfInputQtyActionPerformed
+
+    private void tfInputJumlahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfInputJumlahActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfInputJumlahActionPerformed
 
     /**
      * @param args the command line arguments
