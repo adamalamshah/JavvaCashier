@@ -11,7 +11,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import java.awt.print.*;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -101,11 +103,11 @@ public class CashierPage extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 239, Short.MAX_VALUE)
                 .addComponent(logo)
-                .addGap(123, 123, 123)
+                .addGap(110, 110, 110)
                 .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(10, 10, 10))
+                .addGap(24, 24, 24))
         );
         panelHeaderLayout.setVerticalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,17 +117,12 @@ public class CashierPage extends javax.swing.JFrame {
                 .addGap(4, 4, 4))
             .addGroup(panelHeaderLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(logo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
                 .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(8, 8, 8))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
-                        .addComponent(lblUser)
-                        .addGap(10, 10, 10))))
+                    .addComponent(jLabel2)
+                    .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(lblUser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(logo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelKiri.setBackground(new java.awt.Color(56, 76, 120));
@@ -137,7 +134,7 @@ public class CashierPage extends javax.swing.JFrame {
 
         lblInputProduk.setFont(new java.awt.Font("Poppins Medium", 0, 12)); // NOI18N
         lblInputProduk.setForeground(new java.awt.Color(255, 255, 255));
-        lblInputProduk.setText("ID produk / nama produk");
+        lblInputProduk.setText("ID produk / Nama produk");
 
         tfInputProduk.setBackground(new java.awt.Color(255, 255, 255));
         tfInputProduk.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
@@ -234,8 +231,8 @@ public class CashierPage extends javax.swing.JFrame {
         panelKanan.setBackground(new java.awt.Color(255, 255, 255));
         panelKanan.setPreferredSize(new java.awt.Dimension(444, 385));
 
-        jScrollPaneTabel.setBackground(new java.awt.Color(239, 239, 239));
-        jScrollPaneTabel.setForeground(new java.awt.Color(239, 239, 239));
+        jScrollPaneTabel.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPaneTabel.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPaneTabel.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
 
         tabelKeranjang.setModel(new javax.swing.table.DefaultTableModel(
@@ -452,27 +449,29 @@ public class CashierPage extends javax.swing.JFrame {
     }
     
     private void tampilkanNota(List<Keranjang> keranjangList, double pembayaran, double kembalian){
+        NumberFormat rupiah = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+
         StringBuilder nota = new StringBuilder();
         String namaKasir = getLblUser().getText();
         String tanggal = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
 
-        nota.append("=========== JAVVA CASHIER ===========\n");
-        nota.append("Kasir : ").append(namaKasir).append("\n");
-        nota.append("Tanggal: ").append(tanggal).append("\n");
-        nota.append("-------------------------------------\n");
-        nota.append(String.format("%-5s%-15s%-10s%-5s%-10s\n", "ID", "Nama", "Harga", "Qty", "Subtotal"));
-        nota.append("-------------------------------------\n");
+        nota.append("================= JAVVA CASHIER =================\n");
+        nota.append("Kasir   : ").append(namaKasir).append("\n");
+        nota.append("Tanggal : ").append(tanggal).append("\n");
+        nota.append("-------------------------------------------------\n");
+        nota.append(String.format("%-5s%-20s%-10s%-5s%-10s\n", "ID", "Nama", "Harga", "Qty", "Subtotal"));
+        nota.append("-------------------------------------------------\n");
 
         for (Keranjang item : keranjangList) {
-            nota.append(String.format("%-5s%-15s%-10.2f%-5d%-10.2f\n",
+            nota.append(String.format("%-5s%-20s%-10.2f%-5d%-10.2f\n",
                         item.getId(), item.getNama(), item.getHarga(), item.getQty(), item.getSubtotal()));
         }
 
-        nota.append("-------------------------------------\n");
-        nota.append(String.format("TOTAL : Rp %.2f\n", Keranjang.getTotal()));
-        nota.append(String.format("Pembayaran : Rp %.2f\n", pembayaran));
-        nota.append(String.format("Kembalian  : Rp %.2f\n", kembalian));
-        nota.append("=========== TERIMA KASIH ============");
+        nota.append("-------------------------------------------------\n");
+        nota.append(String.format("TOTAL      : %s\n", rupiah.format(Keranjang.getTotal())));
+        nota.append(String.format("Pembayaran : %s\n", rupiah.format(pembayaran)));
+        nota.append(String.format("Kembalian  : %s\n", rupiah.format(kembalian)));
+        nota.append("================= TERIMA KASIH ==================");
 
         JTextArea textArea = new JTextArea(nota.toString());
         textArea.setEditable(false);
@@ -484,6 +483,7 @@ public class CashierPage extends javax.swing.JFrame {
     private void btnKonfirmasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKonfirmasiActionPerformed
         double pembayaran = 0;
         double kembalian = 0;
+        NumberFormat rupiah = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
         String metodePembayaran = (String) cbInputMetode.getSelectedItem();
         
         if (metodePembayaran.equalsIgnoreCase("Cash")) {
@@ -509,11 +509,11 @@ public class CashierPage extends javax.swing.JFrame {
             String namaFileTransaksi = "transaksi";
             BufferedWriter bw = new BufferedWriter(new FileWriter(new File(namaFileTransaksi)));
 
-            bw.write("Tanggal: " + tanggalWaktu + "\n");
-            bw.write("Metode Pembayaran: " + metodePembayaran + "\n");
-            bw.write("Pembayaran: Rp " + String.format("%.2f", pembayaran) + "\n");
-            bw.write("Kembalian: Rp " + String.format("%.2f", kembalian) + "\n");
-            bw.write("===========================================\n");
+            bw.write("Tanggal           : " + tanggalWaktu + "\n");
+            bw.write("Metode Pembayaran : " + metodePembayaran + "\n");
+            bw.write("Pembayaran        : " + rupiah.format(pembayaran) + "\n");
+            bw.write("Kembalian         : " + rupiah.format(kembalian) + "\n");
+            bw.write("=================================================\n");
             bw.write("ID\tNama Produk\t\tHarga Satuan\tQTY\tSubtotal\n");
             
             for (Keranjang item : CashierSystem.getKeranjangList()) {
@@ -521,7 +521,7 @@ public class CashierPage extends javax.swing.JFrame {
                 bw.newLine();
             }
             
-            bw.write("===========================================\n");
+            bw.write("=================================================\n");
             bw.write(String.format("TOTAL : Rp %.2f\n", Keranjang.getTotal()));
             bw.write("");
             bw.close();
@@ -605,14 +605,14 @@ public class CashierPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnTambahActionPerformed
 
+    private void tfInputJumlahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfInputJumlahActionPerformed
+        btnKonfirmasi.doClick();
+    }//GEN-LAST:event_tfInputJumlahActionPerformed
+
     private void tfInputQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfInputQtyActionPerformed
         btnTambah.doClick();
         tfInputProduk.requestFocus();
     }//GEN-LAST:event_tfInputQtyActionPerformed
-
-    private void tfInputJumlahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfInputJumlahActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfInputJumlahActionPerformed
 
     /**
      * @param args the command line arguments

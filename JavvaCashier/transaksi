@@ -1,11 +1,11 @@
-Tanggal: 06-06-2025 19-29-30
-Metode Pembayaran: Cash
-Pembayaran: Rp 200000,00
-Kembalian: Rp 85500,00
-===========================================
+Tanggal           : 07-06-2025 12-16-21
+Metode Pembayaran : Cash
+Pembayaran        : Rp10.000.000,00
+Kembalian         : Rp9.703.000,00
+=================================================
 ID	Nama Produk		Harga Satuan	QTY	Subtotal
-001	 Indomie Goreng		3500.0	3	10500.0
-002	 Sabun Lifebuoy 75g		4000.0	5	20000.0
-005	 Gula Pasir 1kg		14000.0	6	84000.0
-===========================================
-TOTAL : Rp 114500,00
+001	Indomie Goreng		3500.0	2	7000.0
+010	Rokok Djarum Super		25000.0	10	250000.0
+020	Permen Kopiko		2000.0	20	40000.0
+=================================================
+TOTAL : Rp 297000,00
