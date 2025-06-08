@@ -506,25 +506,25 @@ public class CashierPage extends javax.swing.JFrame {
         
         try {
             String tanggalWaktu = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss"));
-            String namaFileTransaksi = "transaksi";
-            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(namaFileTransaksi)));
-
-            bw.write("Tanggal           : " + tanggalWaktu + "\n");
-            bw.write("Metode Pembayaran : " + metodePembayaran + "\n");
-            bw.write("Pembayaran        : " + rupiah.format(pembayaran) + "\n");
-            bw.write("Kembalian         : " + rupiah.format(kembalian) + "\n");
-            bw.write("=================================================\n");
-            bw.write("ID\tNama Produk\t\tHarga Satuan\tQTY\tSubtotal\n");
-            
-            for (Keranjang item : CashierSystem.getKeranjangList()) {
-                bw.write(item.getId() + "\t" + item.getNama() + "\t\t" + item.getHarga() + "\t" + item.getQty() + "\t" + item.getSubtotal());
-                bw.newLine();
-            }
-            
-            bw.write("=================================================\n");
-            bw.write(String.format("TOTAL : Rp %.2f\n", Keranjang.getTotal()));
-            bw.write("");
-            bw.close();
+            String namaFileTransaksi = "trancaction " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm")) + ".txt";
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File("log transaksi", namaFileTransaksi)))) {
+                bw.write("Nama kasir        : " + lblUser.getText() + "\n");
+                bw.write("Tanggal           : " + tanggalWaktu + "\n");
+                bw.write("Metode Pembayaran : " + metodePembayaran + "\n");
+                bw.write("Pembayaran        : " + rupiah.format(pembayaran) + "\n");
+                bw.write("Kembalian         : " + rupiah.format(kembalian) + "\n");
+                bw.write("=================================================================\n");
+                bw.write(String.format("%-10s%-25s%-18s%-8s%-10s\n", "ID", "Nama Produk", "Harga Satuan", "QTY", "Subtotal"));
+                
+                for (Keranjang item : CashierSystem.getKeranjangList()) {
+                    bw.write(String.format("%-10s%-25s%-18.2f%-8d%-10.2f", item.getId(), item.getNama(), item.getHarga(), item.getQty(), item.getSubtotal()));
+                    bw.newLine();
+                }
+                
+                bw.write("=================================================================\n");
+                bw.write(String.format("TOTAL : Rp %.2f\n", Keranjang.getTotal()));
+                bw.write("");
+            } 
              
             tampilkanNota(CashierSystem.getKeranjangList(), pembayaran, kembalian);
 

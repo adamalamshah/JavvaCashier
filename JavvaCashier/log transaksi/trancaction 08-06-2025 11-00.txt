@@ -1,0 +1,12 @@
+Nama kasir        : yudi
+Tanggal           : 08-06-2025 11-00-27
+Metode Pembayaran : Cash
+Pembayaran        : Rp70.000,00
+Kembalian         : Rp7.500,00
+=================================================================
+ID        Nama Produk              Harga Satuan      QTY     Subtotal  
+004       Teh Celup Sariwangi      6500,00           1       6500,00   
+005       Gula Pasir 1kg           14000,00          3       42000,00  
+001       Indomie Goreng           3500,00           4       14000,00  
+=================================================================
+TOTAL : Rp 62500,00
