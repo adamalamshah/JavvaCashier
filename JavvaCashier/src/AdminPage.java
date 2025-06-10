@@ -939,11 +939,13 @@ public class AdminPage extends javax.swing.JFrame {
         
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getValueAt(i, 0).equals(tfHapusProduk.getText())) {
-                model.removeRow(i);
-                modelHome.removeRow(i);
-
-                JOptionPane.showMessageDialog(this, "Produk berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
-                break;
+                int confirm = JOptionPane.showConfirmDialog(null,"Apakah Anda yakin ingin menghapus produk ini?", "Message", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    model.removeRow(i);
+                    modelHome.removeRow(i);
+                    JOptionPane.showMessageDialog(this, "Produk berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
+                    saveProdukToFile();
+                }
             }
             else if (i == model.getRowCount() - 1) {
                 JOptionPane.showMessageDialog(this, "Produk tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
@@ -952,7 +954,6 @@ public class AdminPage extends javax.swing.JFrame {
 
         lblTotalProduk.setText(String.valueOf(model.getRowCount()));
         tfHapusProduk.setText("");
-        saveProdukToFile();
         CashierSystem.getProdukList().clear();
         loadProdukFromFile();
     }//GEN-LAST:event_btnHapusProdukActionPerformed
@@ -963,10 +964,13 @@ public class AdminPage extends javax.swing.JFrame {
 
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getValueAt(i, 0).equals(tfHapusKasir.getText())) {
-                model.removeRow(i);
-                modelHome.removeRow(i);
-                JOptionPane.showMessageDialog(this, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
-                break;
+                int confirm = JOptionPane.showConfirmDialog(null,"Apakah Anda yakin ingin menghapus kasir ini?", "Message", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    model.removeRow(i);
+                    modelHome.removeRow(i);
+                    JOptionPane.showMessageDialog(this, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
+                    saveKasirToFile();
+                }
             }
             else if (i == model.getRowCount() - 1) {
                 JOptionPane.showMessageDialog(this, "Kasir tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
@@ -975,7 +979,6 @@ public class AdminPage extends javax.swing.JFrame {
 
         lblTotalKasir.setText(String.valueOf(model.getRowCount()));
         tfHapusKasir.setText("");
-        saveKasirToFile();
         CashierSystem.getUsers().clear();
         loadKasirFromFile();
     }//GEN-LAST:event_btnHapusKasirActionPerformed
@@ -992,8 +995,8 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void btnTambahProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahProdukActionPerformed
         try{
-            String id = tfNamaProduk.getText();
-            String nama = tfIDProduk.getText();
+            String id = tfIDProduk.getText();
+            String nama = tfNamaProduk.getText();
             
             if (nama.isEmpty()||id.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Isi semua field", "Message", JOptionPane.ERROR_MESSAGE);        
@@ -1003,10 +1006,17 @@ public class AdminPage extends javax.swing.JFrame {
 
                 DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
                 DefaultTableModel modelHome = (DefaultTableModel) tableProdukHome.getModel();
+                int rowCount = model.getRowCount();
+                
+                for(int i = 0; i < rowCount; i++) {
+                    if(id.equals(model.getValueAt(i, 0).toString())) {
+                        JOptionPane.showMessageDialog(this, "ID produk duplikat: " + id, "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
                 model.addRow(new Object[]{id, nama, harga});
                 modelHome.addRow(new Object[]{id, nama, harga});
-
-                JOptionPane.showMessageDialog(this, "Produk berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
 
                 lblTotalProduk.setText(String.valueOf(model.getRowCount()));
 
@@ -1015,6 +1025,7 @@ public class AdminPage extends javax.swing.JFrame {
                 tfHargaProduk.setText("");
 
                 saveProdukToFile();
+                JOptionPane.showMessageDialog(this, "Produk berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
                 CashierSystem.getProdukList().clear();
                 loadProdukFromFile();
             }
@@ -1037,10 +1048,18 @@ public class AdminPage extends javax.swing.JFrame {
         } else {
             Kasir kasir = new Kasir(username, password);
             CashierSystem.addUser(kasir);
-            JOptionPane.showMessageDialog(this, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
             
             DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
             DefaultTableModel modelHome = (DefaultTableModel) tableKasirHome.getModel();
+            int rowCount = model.getRowCount();
+
+            for(int i = 0; i < rowCount; i++) {
+                if(username.equals(model.getValueAt(i, 0).toString())) {
+                    JOptionPane.showMessageDialog(this, "Username kasir duplikat: " + username, "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            
             model.addRow(new Object[]{username});
             modelHome.addRow(new Object[]{username});
 
@@ -1050,6 +1069,7 @@ public class AdminPage extends javax.swing.JFrame {
             tfPassword.setText("");
 
             saveKasirToFile();
+            JOptionPane.showMessageDialog(this, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
             CashierSystem.getUsers().clear();
             loadKasirFromFile();
         }
@@ -1077,33 +1097,33 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void saveProdukToFile() {
         try {
+            DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
+            int rowCount = model.getRowCount();
+ 
             FileWriter fw = new FileWriter("DataProduk.txt");
             PrintWriter pw = new PrintWriter(fw);
             
-            DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
-            int rowCount = model.getRowCount();
-            
             for(int i = 0; i < rowCount; i++) {
                 String id = model.getValueAt(i, 0).toString();
-                String nama = model.getValueAt(i, 1).toString();
+                String nama = model.getValueAt(i, 1).toString(); 
                 String harga = model.getValueAt(i, 2).toString();
                 
                 pw.println(id + "," + nama + "," + harga);
             }
-            
             pw.close();
         } catch(IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error saving to file: " + ex.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void saveKasirToFile() {
         try {
-            FileWriter fw = new FileWriter("DataAccount.txt");
-            PrintWriter pw = new PrintWriter(fw);
-            
             DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
             int rowCount = model.getRowCount();
+
+            FileWriter fw = new FileWriter("DataAccount.txt");
+            PrintWriter pw = new PrintWriter(fw);
             
             for(int i = 0; i < rowCount; i++) {
                 String nama = model.getValueAt(i, 0).toString();
@@ -1116,7 +1136,6 @@ public class AdminPage extends javax.swing.JFrame {
                 }
                 pw.println(nama + "," + password);
             }
-            
             pw.close();
             
         } catch(IOException ex) {

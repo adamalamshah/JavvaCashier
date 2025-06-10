@@ -1070,7 +1070,7 @@
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="pnlTambahKasir" pref="248" max="32767" attributes="0"/>
+                                  <Component id="pnlTambahKasir" pref="260" max="32767" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="pnlHapusKasir" min="-2" max="-2" attributes="0"/>
                               </Group>
