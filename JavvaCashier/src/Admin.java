@@ -42,6 +42,16 @@ public class Admin extends User {
 
                 DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
                 DefaultTableModel modelDashboard = (DefaultTableModel) tableProdukDashboard.getModel();
+                
+                int rowCount = model.getRowCount();
+                
+                for(int i = 0; i < rowCount; i++) {
+                    if(id.equals(model.getValueAt(i, 0).toString())) {
+                        JOptionPane.showMessageDialog(null, "ID produk duplikat: " + id, "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                
                 model.addRow(new Object[]{id, nama, harga});
                 modelDashboard.addRow(new Object[]{id, nama, harga});
 
@@ -91,17 +101,26 @@ public class Admin extends User {
 
         if (username.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Isi semua field", "Message", JOptionPane.ERROR_MESSAGE);
-        } else {
+        } else { 
+            DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
+            DefaultTableModel modelDashboard = (DefaultTableModel) tableKasirDashboard.getModel(); 
+            
+            int rowCount = model.getRowCount();
+
+            for(int i = 0; i < rowCount; i++) {
+                if(username.equals(model.getValueAt(i, 0).toString())) {
+                    JOptionPane.showMessageDialog(null, "Username kasir duplikat: " + username, "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            
+            model.setRowCount(0);
+            modelDashboard.setRowCount(0);
+            
             Kasir kasir = new Kasir(username, password);
             CashierSystem.addKasir(kasir);
             CashierSystem.saveKasirToFile();
             CashierSystem.getKasirList().clear();
-            
-            DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
-            DefaultTableModel modelDashboard = (DefaultTableModel) tableKasirDashboard.getModel(); 
-            model.setRowCount(0);
-            modelDashboard.setRowCount(0);
-            
             CashierSystem.loadKasirFromFile(tableKasir, tableKasirDashboard);
             Main.adminPage.updateTotalKasir();
             

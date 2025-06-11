@@ -1,0 +1,10 @@
+Nama kasir        : mulyo
+Tanggal           : 11-06-2025 18-55-44
+Metode Pembayaran : Cash
+Pembayaran        : Rp10.000,00
+Kembalian         : Rp3.000,00
+=================================================================
+ID        Nama Produk              Harga Satuan      QTY     Subtotal  
+001       Indomie Goreng           3500,00           2       7000,00   
+=================================================================
+TOTAL : Rp 7000,00
