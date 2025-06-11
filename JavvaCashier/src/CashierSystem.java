@@ -1,24 +1,16 @@
 import java.io.*;
 import java.util.*;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-
-/**
- *
- * @author Galih
- */
 class CashierSystem {
-    private static List<User> users = new ArrayList<>();
+    private static List<Kasir> kasirList = new ArrayList<>();
     private static List<Produk> produkList = new ArrayList<>();
     private static List<Keranjang> keranjangList = new ArrayList<>();
 
     public static void loadUserData() {
-        users.clear();
+        kasirList.clear();
 
         try (BufferedReader reader = new BufferedReader(new FileReader("DataAccount.txt"))) {
             String line;
@@ -27,7 +19,7 @@ class CashierSystem {
                 if (dataAccount.length == 2) {
                     String username = dataAccount[0].trim();
                     String password = dataAccount[1].trim();
-                    users.add(new User(username, password));
+                    kasirList.add(new Kasir(username, password));
                 }
             }
         } catch (IOException e) {
@@ -35,20 +27,19 @@ class CashierSystem {
         }
     }
     
-    public static void addUser(User user) {
-        users.add(user);
+    public static void addKasir(Kasir kasir) {
+        kasirList.add(kasir);
     }
-
-    public static User getUser(String id) {
-        for (User user : users) {
-            if (user.getUsername().equals(id)) {
-                return user;
+    public static Kasir getKasir(String id) {
+        for (Kasir kasir : kasirList) {
+            if (kasir.getUsername().equals(id)) {
+                return kasir;
             }
         }
         return null;
     }
-    public static List<User> getUsers() {
-        return users;
+    public static List<Kasir> getKasirList() {
+        return kasirList;
     }
 
     public static void addProduk(Produk produk) {
@@ -73,6 +64,7 @@ class CashierSystem {
         }
         return null;
     }
+    
     public static void addKeranjang(Keranjang keranjang){
         keranjangList.add(keranjang);
     }
@@ -84,118 +76,146 @@ class CashierSystem {
         }
         return null;
     }
-
     static void clearKeranjang() {
         keranjangList.clear();
         Keranjang.setTotal(0.0);
     }
-
     static List<Keranjang> getKeranjangList() {
         return keranjangList;
     }
-}
-
-class User {
-    private String username;
-    private String password;
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-}
-class Admin extends User {
-    public Admin() {
-        super("admin", "admin");
-    }
-}
-class Kasir extends User {
-    public Kasir(String username, String password) {
-        super(username, password);
-    }
-}
-
-class Produk {
-    private String id;
-    private String nama;
-    private double harga;
-
-    public Produk(String id, String nama, double harga) {
-        this.id = id;
-        this.nama = nama;
-        this.harga = harga;
-    }
-
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
-    public String getNama() {
-        return nama;
-    }
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
-    public double getHarga() {
-        return harga;
-    }
-    public void setHarga(double harga) {
-        this.harga = harga;
-    }
-}
-
-class Keranjang {
-    private String id;
-    private String nama;
-    private double harga;
-    private int qty;
-    private double subtotal;
-    private static double total = 0.0;
-
-    public Keranjang(String id, String nama, double harga, int qty, double subtotal) {
-        this.id = id;
-        this.nama = nama;
-        this.harga = harga;
-        this.qty = qty;
-        this.subtotal = subtotal;
-    }
-
-    public String getId() {
-        return id;
-    }
-    public String getNama() {
-        return nama;
-    }
-    public double getHarga() {
-        return harga;
-    }
-    public int getQty() {
-        return qty;
-    }
-    public double getSubtotal() {
-        return subtotal;
-    }
-
-    public static double getTotal() {
-        return total;
-    }
-    public static void setTotal(double total) {
-        Keranjang.total = total;
+    
+    static boolean cekAkunKasir(String username, String password){
+        for (Kasir kasir : kasirList) {
+            if (kasir.getUsername().equals(username) && kasir.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
     }
     
+    static void saveProdukToFile(JTable tableProduk) {
+        try {
+            FileWriter fw = new FileWriter("DataProduk.txt");
+            PrintWriter pw = new PrintWriter(fw);
+            
+            DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
+            int rowCount = model.getRowCount();
+            
+            for(int i = 0; i < rowCount; i++) {
+                String id = model.getValueAt(i, 0).toString();
+                String nama = model.getValueAt(i, 1).toString();
+                String harga = model.getValueAt(i, 2).toString();
+                
+                pw.println(id + "," + nama + "," + harga);
+            }
+            
+            pw.close();
+        } catch(IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    static void loadProdukFromFile(JTable tableProduk, JTable tableProdukDashboard) {
+        try {
+            File file = new File("DataProduk.txt");
+            if (!file.exists()) {
+                return;
+            }
+            
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            
+            DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
+            DefaultTableModel modelHome = (DefaultTableModel) tableProdukDashboard.getModel();
+            model.setRowCount(0);
+            modelHome.setRowCount(0);
+            
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length == 3) {
+                    String id = data[0];
+                    String nama = data[1];
+                    double harga = Double.parseDouble(data[2]);
+                    
+                    model.addRow(new Object[]{id, nama, harga});
+                    modelHome.addRow(new Object[]{id, nama, harga});
+                    
+                    Produk produk = new Produk(id, nama, harga);
+                    CashierSystem.addProduk(produk);
+                }
+            }
+            
+            br.close();
+            Main.adminPage.getLblTotalProduk().setText(String.valueOf(model.getRowCount()));
+            
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error loading produk data: " + ex.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }  
+    }
+    
+    static void saveKasirToFile(JTable tableKasir) {
+        try {
+            FileWriter fw = new FileWriter("DataAccount.txt");
+            PrintWriter pw = new PrintWriter(fw);
+            
+            DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
+            int rowCount = model.getRowCount();
+            
+            for(int i = 0; i < rowCount; i++) {
+                String nama = model.getValueAt(i, 0).toString();
+                String password = "";
+                for(User user : CashierSystem.getKasirList()) {
+                    if (user.getUsername().equals(nama)) {
+                        password = user.getPassword();
+                        break;
+                    }
+                }
+                pw.println(nama + "," + password);
+            }
+            
+            pw.close();
+            
+        } catch(IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error saving to file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    static void loadKasirFromFile(JTable tableKasir, JTable tableKasirDashboard) {
+        try {
+            File file = new File("DataAccount.txt");
+            if (!file.exists()) {
+                return;
+            }
+            
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            
+            DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
+            DefaultTableModel modelHome = (DefaultTableModel) tableKasirDashboard.getModel();
+            model.setRowCount(0);
+            modelHome.setRowCount(0);
+            
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length == 2) {
+                    String username = data[0].trim();
+                    String password = data[1].trim();
+
+                    model.addRow(new Object[]{username});
+                    modelHome.addRow(new Object[]{username});
+
+                    Kasir kasir = new Kasir(username, password);
+                    CashierSystem.addKasir(kasir);
+                }
+            }
+            
+            br.close();
+            Main.adminPage.getLblTotalKasir().setText(String.valueOf(model.getRowCount()));
+            
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error loading kasir data: " + ex.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
