@@ -1,0 +1,12 @@
+Nama kasir        : mulyo
+Tanggal           : 11-06-2025 16-23-25
+Metode Pembayaran : Cash
+Pembayaran        : Rp100.000.000,00
+Kembalian         : Rp98.893.000,00
+=================================================================
+ID        Nama Produk              Harga Satuan      QTY     Subtotal  
+001       Indomie Goreng           3500,00           2       7000,00   
+005       Gula Pasir 1kg           14000,00          2       28000,00  
+030       Sampo Lifebuoy 170ml     16000,00          67      1072000,00
+=================================================================
+TOTAL : Rp 1107000,00

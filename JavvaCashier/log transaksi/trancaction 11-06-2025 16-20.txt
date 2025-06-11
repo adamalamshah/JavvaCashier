@@ -1,0 +1,10 @@
+Nama kasir        : mulyo
+Tanggal           : 11-06-2025 16-20-22
+Metode Pembayaran : Cash
+Pembayaran        : Rp10.000,00
+Kembalian         : Rp2.000,00
+=================================================================
+ID        Nama Produk              Harga Satuan      QTY     Subtotal  
+002       Sabun Lifebuoy 75g       4000,00           2       8000,00   
+=================================================================
+TOTAL : Rp 8000,00

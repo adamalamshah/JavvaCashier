@@ -464,7 +464,7 @@ public class CashierPage extends javax.swing.JFrame {
     }//GEN-LAST:event_tfInputProdukActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
-        Main.kasir.batalkanTransaksi();
+        Main.kasir.tambahProdukKeKeranjang(tfInputProduk, tfInputQty, tabelKeranjang);
         tfInputProduk.setText("");
         tfInputQty.setText("");
     }//GEN-LAST:event_btnTambahActionPerformed
