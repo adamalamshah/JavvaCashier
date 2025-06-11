@@ -9,7 +9,6 @@ public class Main {
     public static void main(String args[]) {
         CashierSystem.loadUserData();
         javax.swing.SwingUtilities.invokeLater(() -> {
-            adminPage.loadData();
             loginPage.setVisible(true);
         });
     }

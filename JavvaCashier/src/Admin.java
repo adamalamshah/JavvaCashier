@@ -7,7 +7,7 @@ public class Admin extends User {
     }
 
     @Override
-    public void login(JTextField tfUsername, JPasswordField pfPassword) {
+    public void login(JTextField tfUsername, JPasswordField pfPassword) {  
         if(tfUsername.getText().isEmpty()||pfPassword.getPassword().length == 0) {
             JOptionPane.showMessageDialog(null, "Username atau password tidak boleh kosong", "Message", JOptionPane.INFORMATION_MESSAGE);
             tfUsername.setText("");
@@ -40,15 +40,18 @@ public class Admin extends User {
                 double harga = Double.parseDouble(tfHargaProduk.getText());
 
                 DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
-                DefaultTableModel modelHome = (DefaultTableModel) tableProdukDashboard.getModel();
+                DefaultTableModel modelDashboard = (DefaultTableModel) tableProdukDashboard.getModel();
                 model.addRow(new Object[]{id, nama, harga});
-                modelHome.addRow(new Object[]{id, nama, harga});
+                modelDashboard.addRow(new Object[]{id, nama, harga});
 
                 JOptionPane.showMessageDialog(null, "Produk berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
 
-                CashierSystem.saveProdukToFile(tableProduk);
+                CashierSystem.saveProdukToFile();
                 CashierSystem.getProdukList().clear();
+                model.setRowCount(0);
+                modelDashboard.setRowCount(0);
                 CashierSystem.loadProdukFromFile(tableProduk, tableProdukDashboard);
+                Main.adminPage.getLblTotalProduk().setText(String.valueOf(CashierSystem.getProdukList().size()));
             }
         }
         catch(NumberFormatException e){
@@ -73,9 +76,12 @@ public class Admin extends User {
             }
         }
        
-        CashierSystem.saveProdukToFile(tableProduk);
+        CashierSystem.saveProdukToFile();
         CashierSystem.getProdukList().clear();
+        model.setRowCount(0);
+        modelDashboard.setRowCount(0);
         CashierSystem.loadProdukFromFile(tableProduk, tableProdukDashboard);
+        Main.adminPage.getLblTotalProduk().setText(String.valueOf(CashierSystem.getProdukList().size()));
     }
     
     public void tambahKasir(JTable tableKasir, JTable tableKasirDashboard, JTextField tfUsername, JTextField tfPassword){
@@ -87,27 +93,29 @@ public class Admin extends User {
         } else {
             Kasir kasir = new Kasir(username, password);
             CashierSystem.addKasir(kasir);
-            JOptionPane.showMessageDialog(null, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
+            CashierSystem.saveKasirToFile();
+            CashierSystem.getKasirList().clear();
             
             DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
-            DefaultTableModel modelHome = (DefaultTableModel) tableKasirDashboard.getModel();
-            model.addRow(new Object[]{username});
-            modelHome.addRow(new Object[]{username});
-
-            CashierSystem.saveKasirToFile(tableKasir);
-            CashierSystem.getKasirList().clear();
+            DefaultTableModel modelDashboard = (DefaultTableModel) tableKasirDashboard.getModel(); 
+            model.setRowCount(0);
+            modelDashboard.setRowCount(0);
+            
             CashierSystem.loadKasirFromFile(tableKasir, tableKasirDashboard);
+            Main.adminPage.getLblTotalKasir().setText(String.valueOf(CashierSystem.getKasirList().size()));
+            
+            JOptionPane.showMessageDialog(null, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     
     public void hapusKasir(JTable tableKasir, JTable tableKasirDashboard, JTextField tfHapusKasir){
         DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
-        DefaultTableModel modelHome = (DefaultTableModel) tableKasirDashboard.getModel();
+        DefaultTableModel modelDashboard = (DefaultTableModel) tableKasirDashboard.getModel();
 
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getValueAt(i, 0).equals(tfHapusKasir.getText())) {
                 model.removeRow(i);
-                modelHome.removeRow(i);
+                modelDashboard.removeRow(i);
                 JOptionPane.showMessageDialog(null, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
                 break;
             }
@@ -116,8 +124,11 @@ public class Admin extends User {
             }
         }
         
-        CashierSystem.saveKasirToFile(tableKasir);
+        CashierSystem.saveKasirToFile();
         CashierSystem.getKasirList().clear();
+        model.setRowCount(0);
+        modelDashboard.setRowCount(0);
         CashierSystem.loadKasirFromFile(tableKasir, tableKasirDashboard);
+        Main.adminPage.getLblTotalKasir().setText(String.valueOf(CashierSystem.getKasirList().size()));
     }  
 }

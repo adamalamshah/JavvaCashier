@@ -93,12 +93,12 @@ class CashierSystem {
         return false;
     }
     
-    static void saveProdukToFile(JTable tableProduk) {
+    static void saveProdukToFile() {
         try {
             FileWriter fw = new FileWriter("DataProduk.txt");
             PrintWriter pw = new PrintWriter(fw);
             
-            DefaultTableModel model = (DefaultTableModel) tableProduk.getModel();
+            DefaultTableModel model = (DefaultTableModel) Main.adminPage.getTableProduk().getModel();
             int rowCount = model.getRowCount();
             
             for(int i = 0; i < rowCount; i++) {
@@ -146,7 +146,6 @@ class CashierSystem {
             }
             
             br.close();
-            Main.adminPage.getLblTotalProduk().setText(String.valueOf(model.getRowCount()));
             
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Error loading produk data: " + ex.getMessage(), 
@@ -154,25 +153,17 @@ class CashierSystem {
         }  
     }
     
-    static void saveKasirToFile(JTable tableKasir) {
+    static void saveKasirToFile() {
         try {
             FileWriter fw = new FileWriter("DataAccount.txt");
             PrintWriter pw = new PrintWriter(fw);
             
-            DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
-            int rowCount = model.getRowCount();
-            
-            for(int i = 0; i < rowCount; i++) {
-                String nama = model.getValueAt(i, 0).toString();
-                String password = "";
-                for(User user : CashierSystem.getKasirList()) {
-                    if (user.getUsername().equals(nama)) {
-                        password = user.getPassword();
-                        break;
-                    }
-                }
-                pw.println(nama + "," + password);
+            for (User user : CashierSystem.getKasirList()) {
+                String username = user.getUsername();
+                String password = user.getPassword();
+                pw.println(username + "," + password);
             }
+
             
             pw.close();
             
@@ -194,6 +185,7 @@ class CashierSystem {
             DefaultTableModel modelHome = (DefaultTableModel) tableKasirDashboard.getModel();
             model.setRowCount(0);
             modelHome.setRowCount(0);
+            CashierSystem.getKasirList().clear();
             
             String line;
             while ((line = br.readLine()) != null) {
@@ -211,7 +203,6 @@ class CashierSystem {
             }
             
             br.close();
-            Main.adminPage.getLblTotalKasir().setText(String.valueOf(model.getRowCount()));
             
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Error loading kasir data: " + ex.getMessage(), 

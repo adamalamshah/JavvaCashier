@@ -20,6 +20,7 @@ public class AdminPage extends javax.swing.JFrame {
         btnLogout.setFocusPainted(false);
 
         cardLayout = (CardLayout)(pnlCards.getLayout());
+        loadData();
     }
 
     @SuppressWarnings("unchecked")
@@ -892,10 +893,24 @@ public class AdminPage extends javax.swing.JFrame {
     public JLabel getLblTotalKasir() {
         return lblTotalProduk;
     }
+    public JTable getTableProduk(){
+        return tableProduk;
+    }
+    public JTable getTableProdukDashboard(){
+        return tableProdukDashboard;
+    }
+    public JTable getTableKasir(){
+        return tableKasir;
+    }
+    public JTable getTableKasirDashboard(){
+        return tableKasirDashboard;
+    }
     
     public void loadData(){
         CashierSystem.loadProdukFromFile(tableProduk, tableProdukDashboard);
         CashierSystem.loadKasirFromFile(tableKasir, tableKasirDashboard);
+        lblTotalProduk.setText(String.valueOf(CashierSystem.getProdukList().size()));
+        lblTotalKasir.setText(String.valueOf(CashierSystem.getKasirList().size()));
     }
     
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
