@@ -166,6 +166,7 @@ public class LoginPage extends javax.swing.JFrame {
         else {
             btnKasir.doClick();
         }
+        tfUsername.requestFocus();
     }//GEN-LAST:event_pfPasswordActionPerformed
 
     public static void main(String args[]) {     
