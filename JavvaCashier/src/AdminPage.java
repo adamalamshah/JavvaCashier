@@ -912,6 +912,9 @@ public class AdminPage extends javax.swing.JFrame {
         lblTotalProduk.setText(String.valueOf(CashierSystem.getProdukList().size()));
         lblTotalKasir.setText(String.valueOf(CashierSystem.getKasirList().size()));
     }
+    public void updateTotalKasir() {
+        lblTotalKasir.setText(String.valueOf(CashierSystem.getKasirList().size()));
+    }
     
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
         cardLayout.show(pnlCards, "cardDashboard");

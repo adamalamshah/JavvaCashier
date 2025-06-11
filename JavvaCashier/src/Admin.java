@@ -1,3 +1,4 @@
+import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -102,7 +103,7 @@ public class Admin extends User {
             modelDashboard.setRowCount(0);
             
             CashierSystem.loadKasirFromFile(tableKasir, tableKasirDashboard);
-            Main.adminPage.getLblTotalKasir().setText(String.valueOf(CashierSystem.getKasirList().size()));
+            Main.adminPage.updateTotalKasir();
             
             JOptionPane.showMessageDialog(null, "Kasir berhasil ditambahkan", "Message", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -111,17 +112,22 @@ public class Admin extends User {
     public void hapusKasir(JTable tableKasir, JTable tableKasirDashboard, JTextField tfHapusKasir){
         DefaultTableModel model = (DefaultTableModel) tableKasir.getModel();
         DefaultTableModel modelDashboard = (DefaultTableModel) tableKasirDashboard.getModel();
+        
+        List<Kasir> kasirList = CashierSystem.getKasirList();
+        boolean ditemukan = false;
 
-        for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getValueAt(i, 0).equals(tfHapusKasir.getText())) {
-                model.removeRow(i);
-                modelDashboard.removeRow(i);
-                JOptionPane.showMessageDialog(null, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
+        for (int i = 0; i < kasirList.size(); i++) {
+            if (kasirList.get(i).getUsername().equals(tfHapusKasir.getText())) {
+                kasirList.remove(i);
+                ditemukan = true;
                 break;
             }
-            else if (i == model.getRowCount() - 1) {
-                JOptionPane.showMessageDialog(null, "Kasir tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
-            }
+        }
+        
+        if (ditemukan) {
+            JOptionPane.showMessageDialog(null, "Kasir berhasil dihapus", "Message", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Kasir tidak ditemukan", "Message", JOptionPane.ERROR_MESSAGE);
         }
         
         CashierSystem.saveKasirToFile();
@@ -129,6 +135,6 @@ public class Admin extends User {
         model.setRowCount(0);
         modelDashboard.setRowCount(0);
         CashierSystem.loadKasirFromFile(tableKasir, tableKasirDashboard);
-        Main.adminPage.getLblTotalKasir().setText(String.valueOf(CashierSystem.getKasirList().size()));
+        Main.adminPage.updateTotalKasir();
     }  
 }

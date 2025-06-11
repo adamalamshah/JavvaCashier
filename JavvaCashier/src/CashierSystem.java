@@ -185,7 +185,6 @@ class CashierSystem {
             DefaultTableModel modelHome = (DefaultTableModel) tableKasirDashboard.getModel();
             model.setRowCount(0);
             modelHome.setRowCount(0);
-            CashierSystem.getKasirList().clear();
             
             String line;
             while ((line = br.readLine()) != null) {
